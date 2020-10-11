@@ -1,0 +1,38 @@
+[
+  {
+    "languageId": 1,
+    "name": "Kotlin",
+    "description": "Kotlin (/ˈkɒtlɪn/)[2] is a cross-platform, statically typed, general-purpose programming language with type inference. Kotlin is designed to interoperate fully with Java, and the JVM version of Kotlin's standard library depends on the Java Class Library,[3] but type inference allows its syntax to be more concise. Kotlin mainly targets the JVM, but also compiles to JavaScript (for e.g. frontend web applications using React[4]) or native code (via LLVM), e.g. for native iOS apps sharing business logic with Android apps.[5] Language development costs are borne by JetBrains, while the Kotlin Foundation protects the Kotlin trademark.[6]\n\nOn 7 May 2019, Google announced that the Kotlin programming language is now its preferred language for Android app developers.[7] Since the release of Android Studio 3.0 in October 2017, Kotlin has been included as an alternative to the standard Java compiler. The Android Kotlin compiler targets Java 6 by default, but lets the programmer choose to target Java 8 up to 13, for optimization,[8] or more features.[9]",
+    "createdBy": "JetBrains",
+    "createdAt": 2011,
+    "typeLanguage": "Mobile",
+    "imageUrl": "https://avatars0.githubusercontent.com/u/54724686?v=4"
+  },
+  {
+    "languageId": 2,
+    "name": "Java",
+    "description": "Java is a class-based, object-oriented programming language that is designed to have as few implementation dependencies as possible. It is a general-purpose programming language intended to let application developers write once, run anywhere (WORA),[17] meaning that compiled Java code can run on all platforms that support Java without the need for recompilation.[18] Java applications are typically compiled to bytecode that can run on any Java virtual machine (JVM) regardless of the underlying computer architecture. The syntax of Java is similar to C and C++, but it has fewer low-level facilities than either of them. As of 2019, Java was one of the most popular programming languages in use according to GitHub,[19][20] particularly for client-server web applications, with a reported 9 million developers.[21]\n\nJava was originally developed by James Gosling at Sun Microsystems (which has since been acquired by Oracle) and released in 1995 as a core component of Sun Microsystems' Java platform. The original and reference implementation Java compilers, virtual machines, and class libraries were originally released by Sun under proprietary licenses. As of May 2007, in compliance with the specifications of the Java Community Process, Sun had relicensed most of its Java technologies under the GNU General Public License. Meanwhile, others have developed alternative implementations of these Sun technologies, such as the GNU Compiler for Java (bytecode compiler), GNU Classpath (standard libraries), and IcedTea-Web (browser plugin for applets).",
+    "createdBy": "Sun Microsystems",
+    "createdAt": 1995,
+    "typeLanguage": "Mobile",
+    "imageUrl": "https://avatars3.githubusercontent.com/u/993325?v=4"
+  },
+  {
+    "languageId": 3,
+    "name": "C++",
+    "description": "C++ (/ˌsiːˌplʌsˈplʌs/) is a general-purpose programming language created by Bjarne Stroustrup as an extension of the C programming language, or \"C with Classes\". The language has expanded significantly over time, and modern C++ now has object-oriented, generic, and functional features in addition to facilities for low-level memory manipulation. It is almost always implemented as a compiled language, and many vendors provide C++ compilers, including the Free Software Foundation, LLVM, Microsoft, Intel, Oracle, and IBM, so it is available on many platforms.[9]\n\nC++ was designed with a bias toward system programming and embedded, resource-constrained software and large systems, with performance, efficiency, and flexibility of use as its design highlights.[10] C++ has also been found useful in many other contexts, with key strengths being software infrastructure and resource-constrained applications,[10] including desktop applications, video games, servers (e.g. e-commerce, Web search, or SQL servers), and performance-critical applications (e.g. telephone switches or space probes).[11]",
+    "createdBy": "Bjarne Stroustrup",
+    "createdAt": 1998,
+    "typeLanguage": "Firmware",
+    "imageUrl": "https://avatars3.githubusercontent.com/u/1137253?v=4"
+  },
+  {
+    "languageId": 4,
+    "name": "Swift",
+    "description": "Swift is a general-purpose, multi-paradigm, compiled programming language developed by Apple Inc. for iOS, iPadOS, macOS, watchOS, tvOS, and Linux. Swift is designed to work with Apple's Cocoa and Cocoa Touch frameworks and the large body of existing Objective-C code written for Apple products. It is built with the open source LLVM compiler framework and has been included in Xcode since version 6, released in 2014. On Apple platforms,[12] it uses the Objective-C runtime library which allows C, Objective-C, C++ and Swift code to run within one program.[13]\n\nApple intended Swift to support many core concepts associated with Objective-C, notably dynamic dispatch, widespread late binding, extensible programming and similar features, but in a \"safer\" way, making it easier to catch software bugs; Swift has features addressing some common programming errors like null pointer dereferencing and provides syntactic sugar to help avoid the pyramid of doom. Swift supports the concept of protocol extensibility, an extensibility system that can be applied to types, structs and classes, which Apple promotes as a real change in programming paradigms they term \"protocol-oriented programming\"[14] (similar to traits).[15]",
+    "createdBy": "Apple Inc",
+    "createdAt": 2014,
+    "typeLanguage": "Mobile",
+    "imageUrl": "https://avatars2.githubusercontent.com/u/37288060?v=4"
+  }
+]

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/view_pager_fragment">
+
+    <fragment
+        android:id="@+id/view_pager_fragment"
+        android:name="com.vjezba.androidjetpackgithub.ui.fragments.HomeViewPagerFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_view_pager">
+
+        <action
+            android:id="@+id/action_view_pager_fragment_to_language_details_fragment"
+            app:destination="@id/language_details_fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/action_view_pager_fragment_to_slideshow_fragment"
+            app:destination="@id/paggin_with_network_and_db"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/language_details_fragment"
+        android:name="com.vjezba.androidjetpackgithub.ui.fragments.LanguageDetailsFragment"
+        android:label="@string/language_details_title"
+        tools:layout="@layout/fragment_language_details">
+
+        <action
+            android:id="@+id/action_language_detail_fragment_to_gallery_fragment"
+            app:destination="@id/gallery_fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <argument
+            android:name="languagesId"
+            app:argType="integer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/gallery_fragment"
+        android:name="com.vjezba.androidjetpackgithub.ui.fragments.GalleryFragment"
+        android:label="@string/language_details_title"
+        tools:layout="@layout/fragment_gallery">
+        <argument
+            android:name="languageName"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/paggin_with_network_and_db"
+        android:name="com.vjezba.androidjetpackgithub.ui.fragments.PaggingWithNetworkAndDbFragment"
+        android:label="@string/menu_numbers"
+        tools:layout="@layout/fragment_pagging_network_and_db" >
+
+        <action
+            android:id="@+id/paggin_with_network_and_db_fragment_to_details_pagging_with_network_and_db_fragment"
+            app:destination="@id/details_pagging_with_network_and_db_fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/details_pagging_with_network_and_db_fragment"
+        android:name="com.vjezba.androidjetpackgithub.ui.fragments.PaggingWithNetworkAndDbDataFragment"
+        android:label="Pagging with network and data example"
+        tools:layout="@layout/fragment_pagging_network_and_db_data">
+
+        <argument
+            android:name="languageName"
+            app:argType="string" />
+    </fragment>
+
+
+</navigation>

@@ -17,13 +17,12 @@
 package com.vjezba.data.networking
 
 import com.vjezba.data.networking.model.RepositoryResponseApi
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-import okhttp3.logging.HttpLoggingInterceptor.Level
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import com.vjezba.domain.model.RepositoryResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
+import java.util.*
+import io.reactivex.Observable
+import io.reactivex.Single
 
 /**
  * Used to connect to the Unsplash API to fetch photos
@@ -43,5 +42,14 @@ interface GithubRepositoryApi {
         @Query("page") page: Int,
         @Query("per_page") perPage: Int
     ): RepositoryResponseApi
+
+
+    // example for rxjava
+    @GET("search/repositories")
+    fun searchGithubRepositoryWithRxJava2(
+        @Query("q") query: String,
+        @Query("page") page: Int,
+        @Query("per_page") perPage: Int
+    ): Single<RepositoryResponseApi>
 
 }

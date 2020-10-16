@@ -49,6 +49,7 @@
     <string name="menu_home">AndroidJetpackGithub Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_numbers">Pagging with DB and Network</string>
+    <string name="menu_rxjava2">Rxjava2</string>
 
     <string name="number_of_parts">Number of parts: %d</string>
     <string name="year">Year: %d</string>

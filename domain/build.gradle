@@ -62,4 +62,7 @@ dependencies {
     implementation "com.google.dagger:hilt-android:$hiltVersion"
     implementation "androidx.hilt:hilt-lifecycle-viewmodel:$hiltViewModelVersion"
 
+    // rxjava
+    implementation "io.reactivex.rxjava2:rxjava:$rxjavaVersion"
+
 }

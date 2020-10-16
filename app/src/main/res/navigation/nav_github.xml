@@ -27,6 +27,15 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
 
+
+        <action
+            android:id="@+id/action_view_pager_fragment_to_rxjava2_tutorial_fragment"
+            app:destination="@id/rxjava2_tutorial"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
     </fragment>
 
     <fragment
@@ -82,6 +91,15 @@
         <argument
             android:name="languageName"
             app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/rxjava2_tutorial"
+        android:name="com.vjezba.androidjetpackgithub.ui.fragments.GithubReposRxJava2Fragment"
+        android:label="@string/menu_rxjava2"
+        tools:layout="@layout/fragment_pagging_network_and_db" >
+
+
     </fragment>
 
 

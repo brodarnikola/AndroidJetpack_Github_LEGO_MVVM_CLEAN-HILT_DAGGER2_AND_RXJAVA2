@@ -38,12 +38,18 @@ buildscript {
         uiAutomatorVersion = '2.2.0'
         viewPagerVersion = '1.0.0'
         workVersion = WORK_VERSION //'2.1.0'
+
+        // hilt and dagger2 versions
         daggerVersion = DAGGER2_VERSION
 
         assistedInjectVersion = '0.5.2'
-        
+
         hiltVersion = '2.28.3-alpha'
         hiltViewModelVersion = '1.0.0-alpha02'
+
+        //rxjava2 versions
+        rxjavaVersion = '2.1.9'
+        rxAndroidVersion = '2.0.1'
     }
 
 

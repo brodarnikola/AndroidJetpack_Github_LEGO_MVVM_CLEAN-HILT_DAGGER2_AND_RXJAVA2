@@ -23,7 +23,10 @@ import com.vjezba.data.database.AppDatabase
 import com.vjezba.data.database.mapper.DbMapper
 import com.vjezba.data.networking.GithubRepositoryApi
 import com.vjezba.domain.model.RepositoryDetailsResponse
+import com.vjezba.domain.model.RepositoryResponse
 import com.vjezba.domain.repository.GithubRepository
+import io.reactivex.Observable
+import io.reactivex.Single
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -57,6 +60,13 @@ class GithubRepositoryImpl  constructor(
         ).flow
 
         return repositoryDetailsResponse.map { dbMapper.mapPagingRepositoryDetailsResponseDbToPagingRepositoryDetailsResponse(it) }
+    }
+
+    override fun getSearchRepositorieRxJava2(query: String): Single<RepositoryResponse> {
+        val repos = service.searchGithubRepositoryWithRxJava2(query, 0, 15)
+        val finalRepos = dbMapper?.mapRxJavaApiResponseGithubToDomainGithub(responseApi = repos)
+
+        return finalRepos!!
     }
 
     companion object {

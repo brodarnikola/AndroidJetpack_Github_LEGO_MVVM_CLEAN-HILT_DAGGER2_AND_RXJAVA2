@@ -174,7 +174,6 @@ class LanguagesActivity : AppCompatActivity() {
 
 //Add all RxJava disposables to a CompositeDisposable//
 
-
         myCompositeDisposable = CompositeDisposable()
         myCompositeDisposable.add(
             requestInterface.searchGithubRepositoryWithRxJava2("java", 1, 15)

@@ -18,6 +18,7 @@ package com.vjezba.data.networking
 
 import com.vjezba.data.networking.model.RepositoryResponseApi
 import com.vjezba.domain.model.RepositoryResponse
+import io.reactivex.Flowable
 import retrofit2.http.GET
 import retrofit2.http.Query
 import java.util.*
@@ -51,5 +52,12 @@ interface GithubRepositoryApi {
         @Query("page") page: Int,
         @Query("per_page") perPage: Int
     ): Single<RepositoryResponseApi>
+
+    @GET("search/repositories")
+    fun searchGithubRepositoryWithFlowable(
+        @Query("q") query: String,
+        @Query("page") page: Int,
+        @Query("per_page") perPage: Int
+    ): Flowable<RepositoryResponseApi>
 
 }

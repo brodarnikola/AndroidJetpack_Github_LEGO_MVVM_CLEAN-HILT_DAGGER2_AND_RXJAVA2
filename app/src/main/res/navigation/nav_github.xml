@@ -95,9 +95,9 @@
 
     <fragment
         android:id="@+id/rxjava2_tutorial"
-        android:name="com.vjezba.androidjetpackgithub.ui.fragments.GithubReposRxJava2Fragment"
+        android:name="com.vjezba.androidjetpackgithub.ui.fragments.RxJava2TutorialsFragment"
         android:label="@string/menu_rxjava2"
-        tools:layout="@layout/fragment_pagging_network_and_db" >
+        tools:layout="@layout/fragment_rxjava2_tutorial" >
 
 
     </fragment>

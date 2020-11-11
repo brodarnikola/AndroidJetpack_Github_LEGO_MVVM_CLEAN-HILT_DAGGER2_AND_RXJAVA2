@@ -86,7 +86,6 @@ class LanguagesActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
 
-        rxJava2Tutorials()
 
         val headerView = nav_view.getHeaderView(0)
         val navUsername = headerView.findViewById(R.id.tvNameOfUser) as TextView
@@ -147,113 +146,5 @@ class LanguagesActivity : AppCompatActivity() {
             super.onBackPressed()
         }
     }
-
-    private fun rxJava2Tutorials() {
-
-        val BASE_URL = "https://api.github.com/"
-
-        var myCompositeDisposable: CompositeDisposable? = null
-
-        val requestInterface = Retrofit.Builder()
-
-//Set the API’s base URL//
-
-            .baseUrl(BASE_URL)
-
-//Specify the converter factory to use for serialization and deserialization//
-
-            .addConverterFactory(GsonConverterFactory.create())
-
-//Add a call adapter factory to support RxJava return types//
-
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-
-//Build the Retrofit instance//
-
-            .build().create(GithubRepositoryApi::class.java)
-
-//Add all RxJava disposables to a CompositeDisposable//
-
-
-        myCompositeDisposable = CompositeDisposable()
-        myCompositeDisposable.add(
-            requestInterface.searchGithubRepositoryWithRxJava2("java", 1, 15)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponse)
-        )
-
-
-        val animalsObservable =
-            Observable.just("Ant", "Bee", "Cat", "Dog", "Fox")
-
-        val animalObserver= getAnimalsObserver()
-
-        animalsObservable
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.io())
-            .map { name -> name.toUpperCase() }
-            .subscribe(animalObserver)
-
-
-        val d = Observable.just(1, 2, 3)
-            .map { i: Int -> i * i }
-            .map { i: Int -> i * i }
-            .filter { i: Int -> i > 10 }
-            .subscribe { x: Int? ->
-                Log.d(ContentValues.TAG, "" + x)
-                println(x) }
-    }
-
-    private fun handleResponse(repositoryResponseApi: RepositoryResponseApi) {
-
-        Log.d(ContentValues.TAG, "" + repositoryResponseApi.items.size)
-        //adapter.submitData(repositoryResponseApi.items.map)
-//        myRetroCryptoArrayList = ArrayList(cryptoList)
-//        myAdapter = MyAdapter(myRetroCryptoArrayList!!, this)
-//
-//        //Set the adapter//
-//
-//        cryptocurrency_list.adapter = myAdapter
-    }
-
-    private fun getAnimalsObserver(): Observer<String?> {
-        return object : Observer<String?> {
-
-            override fun onNext(s: String) {
-                Log.d(ContentValues.TAG, "Name: $s")
-            }
-
-            override fun onError(e: Throwable) {
-                Log.e(
-                    ContentValues.TAG,
-                    "onError: " + e.message
-                )
-            }
-
-            override fun onComplete() {
-                Log.d(
-                    ContentValues.TAG,
-                    "All items are emitted!"
-                )
-            }
-
-            /**
-             * Provides the Observer with the means of cancelling (disposing) the
-             * connection (channel) with the Observable in both
-             * synchronous (from within [.onNext]) and asynchronous manner.
-             * @param d the Disposable instance whose [Disposable.dispose] can
-             * be called anytime to cancel the connection
-             * @since 2.0
-             */
-            override fun onSubscribe(d: Disposable) {
-                Log.d(ContentValues.TAG, "onSubscribe")
-            }
-        }
-    }
-
-
-
-
 
 }

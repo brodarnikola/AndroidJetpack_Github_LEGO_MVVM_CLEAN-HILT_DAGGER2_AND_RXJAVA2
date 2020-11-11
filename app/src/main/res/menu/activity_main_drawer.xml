@@ -12,5 +12,10 @@
             android:id="@+id/paggin_with_network_and_db"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/menu_numbers" />
+
+        <item
+            android:id="@+id/rxjava2_tutorial"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="@string/menu_rxjava2" />
     </group>
 </menu>

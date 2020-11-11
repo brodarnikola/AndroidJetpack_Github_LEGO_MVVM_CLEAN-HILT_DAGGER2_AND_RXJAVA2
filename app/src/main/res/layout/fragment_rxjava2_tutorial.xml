@@ -99,39 +99,20 @@
                 app:layout_constraintTop_toBottomOf="@+id/tvNumberIncreaseAutomatically" />
 
 
-            <Button
-                android:id="@+id/btnIncreaseNumber"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="7dp"
-                android:text="Increase"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/list_repos_flat_map"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:clipToPadding="false"
+                android:paddingEnd="@dimen/card_side_margin"
+                android:paddingStart="@dimen/card_side_margin"
+                android:paddingTop="@dimen/margin_small"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:context="com.google.samples.apps.sunflower.GardenActivity"
+                tools:listitem="@layout/list_rxjava2_flatmap_repos"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/viewSeparator" />
-
-            <TextView
-                android:id="@+id/tvChooseProgrammingLanguage"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="7dp"
-                android:layout_marginEnd="8dp"
-                android:text="Choose a programming language to find a repositories on github"
-                android:textSize="17sp"
-                android:textAlignment="center"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btnIncreaseNumber" />
-
-            <Button
-                android:id="@+id/btnChooseLanguage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="7dp"
-                android:text="CHOOSE"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvChooseProgrammingLanguage" />
 
 
 

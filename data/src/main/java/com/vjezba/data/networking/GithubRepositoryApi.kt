@@ -16,13 +16,15 @@
 
 package com.vjezba.data.networking
 
+import com.vjezba.data.Comment
+import com.vjezba.data.Post
 import com.vjezba.data.networking.model.RepositoryResponseApi
-import com.vjezba.domain.model.RepositoryResponse
-import retrofit2.http.GET
-import retrofit2.http.Query
-import java.util.*
+import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Single
+import retrofit2.http.GET
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 /**
  * Used to connect to the Unsplash API to fetch photos
@@ -51,5 +53,28 @@ interface GithubRepositoryApi {
         @Query("page") page: Int,
         @Query("per_page") perPage: Int
     ): Single<RepositoryResponseApi>
+
+    @GET("search/repositories")
+    fun searchGithubRepositoryWithFlowable(
+        @Query("q") query: String,
+        @Query("page") page: Int,
+        @Query("per_page") perPage: Int
+    ): Flowable<RepositoryResponseApi>
+
+
+    @GET("search/repositories")
+    fun searchGithubRepositoryWithFlatMap(
+        @Query("q") query: String,
+        @Query("page") page: Int,
+        @Query("per_page") perPage: Int
+    ): Observable<RepositoryResponseApi>
+
+    @GET("posts")
+    fun getPosts(): Observable<List<Post>>
+
+    @GET("posts/{id}/comments")
+    fun getComments(
+        @Path("id") id: Int
+    ): Observable<List<Comment>>
 
 }

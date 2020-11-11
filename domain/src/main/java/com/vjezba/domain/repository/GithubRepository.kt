@@ -20,6 +20,7 @@ import io.reactivex.Observable
 import androidx.paging.PagingData
 import com.vjezba.domain.model.RepositoryDetailsResponse
 import com.vjezba.domain.model.RepositoryResponse
+import io.reactivex.Flowable
 import io.reactivex.Single
 import kotlinx.coroutines.flow.Flow
 
@@ -32,6 +33,9 @@ interface GithubRepository {
     fun getSearchRepositoriesWithMediatorAndPaggingData(query: String) : Flow<PagingData<RepositoryDetailsResponse>>
 
 
+    // practice of rxjava2
     fun getSearchRepositorieRxJava2(query: String) : Single<RepositoryResponse>
+
+    fun getSearchRepositorieWithFlowableRxJava2(query: String) : Flowable<RepositoryResponse>
 
 }

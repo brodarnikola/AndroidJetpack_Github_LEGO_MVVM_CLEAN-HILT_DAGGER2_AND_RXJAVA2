@@ -25,6 +25,7 @@ import com.vjezba.data.networking.GithubRepositoryApi
 import com.vjezba.domain.model.RepositoryDetailsResponse
 import com.vjezba.domain.model.RepositoryResponse
 import com.vjezba.domain.repository.GithubRepository
+import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Single
 import kotlinx.coroutines.flow.Flow
@@ -67,6 +68,11 @@ class GithubRepositoryImpl  constructor(
         val finalRepos = dbMapper?.mapRxJavaApiResponseGithubToDomainGithub(responseApi = repos)
 
         return finalRepos!!
+    }
+
+    override fun getSearchRepositorieWithFlowableRxJava2(query: String): Flowable<RepositoryResponse> {
+        val repositoryResult = service.searchGithubRepositoryWithFlowable(query, 1, 10).map { dbMapper!!.mapApiResponseGithubToDomainGithuWithbRxJavaAndFlowable(it) }!! //?: Flowable<RepositoryResponse(0, false, listOf<RepositoryDetailsResponse>())>
+        return repositoryResult
     }
 
     companion object {

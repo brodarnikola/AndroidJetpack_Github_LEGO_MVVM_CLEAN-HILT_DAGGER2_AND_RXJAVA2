@@ -46,7 +46,7 @@ interface GithubRepositoryApi {
     ): RepositoryResponseApi
 
 
-    // example for rxjava
+    // example for rxjava2
     @GET("search/repositories")
     fun searchGithubRepositoryWithRxJava2(
         @Query("q") query: String,

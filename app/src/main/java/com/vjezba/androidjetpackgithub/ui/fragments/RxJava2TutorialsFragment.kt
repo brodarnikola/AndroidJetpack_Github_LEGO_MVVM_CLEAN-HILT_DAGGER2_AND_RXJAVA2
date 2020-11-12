@@ -39,6 +39,7 @@ import io.reactivex.ObservableSource
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import io.reactivex.functions.Predicate
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_languages_main.*
 import kotlinx.android.synthetic.main.fragment_rxjava2_tutorial.*
@@ -49,6 +50,7 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
+import java.util.concurrent.TimeUnit
 import kotlin.jvm.Throws
 
 
@@ -124,7 +126,6 @@ class RxJava2TutorialsFragment : Fragment() {
         getPostObservable()
             .subscribeOn(Schedulers.io())
             .flatMap { posts ->
-                Log.d(ContentValues.TAG, "Da li ce uci unutra 777")
                 getCommentsObservable(posts)
             }
             .observeOn(AndroidSchedulers.mainThread())
@@ -148,14 +149,6 @@ class RxJava2TutorialsFragment : Fragment() {
             })
     }
 
-    private fun setupRetrofitFlatMap(): GithubRepositoryApi {
-        return Retrofit.Builder()
-            .baseUrl("https://jsonplaceholder.typicode.com/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .build().create(GithubRepositoryApi::class.java)
-    }
-
     private fun getPostObservable() : Observable<Post> {
         val resultPost = setupRetrofitFlatMap()
             .getPosts( )
@@ -164,7 +157,6 @@ class RxJava2TutorialsFragment : Fragment() {
             .flatMap( object :  io.reactivex.functions.Function< List<Post> , ObservableSource<Post>> {
                 @Throws
                 override fun apply( posts: List<Post> ) : ObservableSource<Post>  {
-                    Log.d(ContentValues.TAG, "Da li ce uci unutra 555")
                     adapter?.setPosts(posts.toMutableList())
                     return Observable.fromIterable(posts)
                         .subscribeOn(Schedulers.io())
@@ -188,7 +180,6 @@ class RxJava2TutorialsFragment : Fragment() {
                         .name + " for " + delay.toString() + "ms"
                 )
 
-                Log.d(ContentValues.TAG, "Da li ce uci unutra 9999")
                 post.comments = comments
                 post
             }
@@ -197,9 +188,17 @@ class RxJava2TutorialsFragment : Fragment() {
         return resultPostComments
     }
 
+    private fun setupRetrofitFlatMap(): GithubRepositoryApi {
+        return Retrofit.Builder()
+            .baseUrl("https://jsonplaceholder.typicode.com/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .build().create(GithubRepositoryApi::class.java)
+    }
+
     private fun rxJava2Tutorials() {
 
-        setupCompositeDisposable(BASE_URL)
+        setupCompositeDisposable()
 
         simpleObservablesAndObservers()
     }
@@ -212,7 +211,7 @@ class RxJava2TutorialsFragment : Fragment() {
             .build().create(GithubRepositoryApi::class.java)
     }
 
-    private fun setupCompositeDisposable(baseUrl : String) {
+    private fun setupCompositeDisposable() {
 
         val requestInterface = setupRetrofit()
 
@@ -241,6 +240,32 @@ class RxJava2TutorialsFragment : Fragment() {
     }
 
     private fun simpleObservablesAndObservers() {
+
+        val intervalObservable = Observable
+            .interval(1, TimeUnit.SECONDS)
+            .subscribeOn(Schedulers.io())
+            .takeWhile(object : Predicate<Long?> {
+                // stop the process if more than 5 seconds passes
+                @Throws(java.lang.Exception::class)
+                override fun test(aLong: Long): Boolean {
+                    return aLong <= 5
+                }
+            })
+            .observeOn(AndroidSchedulers.mainThread())
+
+        intervalObservable.subscribe(object : io.reactivex.Observer<Long?> {
+            override fun onSubscribe(d: Disposable) {}
+            override fun onNext(aLong: Long) {
+                Log.d(TAG, "AAAA onNext: interval: $aLong")
+            }
+
+            override fun onComplete() {}
+
+            override fun onError(e: Throwable) {
+                Log.e(TAG, "error: $e")
+            }
+        })
+
         val animalsObservable =
             Observable.just("Ant", "Bee", "Cat", "Dog", "Fox")
 

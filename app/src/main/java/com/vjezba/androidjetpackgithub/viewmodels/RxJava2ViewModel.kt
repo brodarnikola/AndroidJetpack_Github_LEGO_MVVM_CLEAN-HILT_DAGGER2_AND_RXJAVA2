@@ -2,14 +2,14 @@ package com.vjezba.androidjetpackgithub.viewmodels
 
 import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.LiveDataReactiveStreams
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.Observer;
+import androidx.lifecycle.*
 import com.vjezba.domain.model.RepositoryResponse
 import com.vjezba.domain.repository.GithubRepository
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.toSingle
 import io.reactivex.schedulers.Schedulers
+import org.reactivestreams.Subscriber
+import org.reactivestreams.Subscription
 
 
 class RxJava2ViewModel @ViewModelInject constructor (
@@ -19,12 +19,24 @@ class RxJava2ViewModel @ViewModelInject constructor (
     private val authUser: MediatorLiveData<RepositoryResponse> = MediatorLiveData<RepositoryResponse>()
 
     fun observeRepos(query: String) : LiveData<RepositoryResponse> {
-        val source: LiveData<RepositoryResponse> = LiveDataReactiveStreams.fromPublisher(
+
+        var source: LiveData<RepositoryResponse>? = null
+        try {
+            source = LiveDataReactiveStreams.fromPublisher(
             repository.getSearchRepositorieWithFlowableRxJava2(query)
                 .subscribeOn(Schedulers.io())
-        )
+                .observeOn(AndroidSchedulers.mainThread())
+                .onErrorReturn { error ->
+                    print("onError crash: ${error}")
+                    throw error
+                }
+            )
+        }
+        catch (e : Exception) {
+            print("Exception: ${e}")
+        }
 
-        authUser.addSource(source, object : Observer<RepositoryResponse?> {
+        authUser.addSource(source!!, object : Observer<RepositoryResponse?> {
             override fun onChanged(user: RepositoryResponse?) {
                 authUser.setValue(user)
                 authUser.removeSource(source)
@@ -46,6 +58,5 @@ class RxJava2ViewModel @ViewModelInject constructor (
             _incrementNumberAutomaticallyByOne.value = number + 1
         }
     }
-
 
 }

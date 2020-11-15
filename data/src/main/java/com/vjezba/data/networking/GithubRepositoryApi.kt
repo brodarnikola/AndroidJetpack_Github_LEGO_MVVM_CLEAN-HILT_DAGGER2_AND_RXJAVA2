@@ -26,6 +26,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
+
 /**
  * Used to connect to the Unsplash API to fetch photos
  */
@@ -76,5 +77,10 @@ interface GithubRepositoryApi {
     fun getComments(
         @Path("id") id: Int
     ): Observable<List<Comment>>
+
+    @GET("posts/{id}")
+    fun getPost(
+        @Path("id") id: Int
+    ): Observable<Post>
 
 }

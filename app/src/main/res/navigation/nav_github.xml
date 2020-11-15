@@ -99,8 +99,21 @@
         android:label="@string/menu_rxjava2"
         tools:layout="@layout/fragment_rxjava2_tutorial" >
 
+        <action
+            android:id="@+id/rxjava2_tutorial_fragment_to_rxjava2_switch_map_fragment"
+            app:destination="@id/rxjava2_switchMap"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
 
     </fragment>
+
+    <fragment
+        android:id="@+id/rxjava2_switchMap"
+        android:name="com.vjezba.androidjetpackgithub.ui.fragments.RxJava2SwitchMapFragment"
+        android:label="Switchmap and flatmap example"
+        tools:layout="@layout/fragment_rxjava2_switch_map" />
 
 
 </navigation>

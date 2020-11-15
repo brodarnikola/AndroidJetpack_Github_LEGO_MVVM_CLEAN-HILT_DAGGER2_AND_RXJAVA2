@@ -27,6 +27,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.vjezba.androidjetpackgithub.databinding.FragmentRxjava2TutorialBinding
 import com.vjezba.androidjetpackgithub.ui.adapters.ReposRxJava2FlatMapAdapter
 import com.vjezba.androidjetpackgithub.viewmodels.RxJava2ViewModel
@@ -51,6 +52,9 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
 import java.util.concurrent.TimeUnit
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 import kotlin.jvm.Throws
 
 
@@ -104,6 +108,11 @@ class RxJava2TutorialsFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
+        btnSwitchMap.setOnClickListener {
+            val direction = RxJava2TutorialsFragmentDirections.rxjava2TutorialFragmentToRxjava2SwitchMapFragment()
+            findNavController().navigate(direction)
+        }
+
         rxJava2Tutorials()
 
         rxJava2FlatMapExample()
@@ -144,7 +153,7 @@ class RxJava2TutorialsFragment : Fragment() {
                 }
 
                 override fun onError(e: Throwable) {
-                    Log.e(TAG, "onError: ", e)
+                    Log.e(TAG, "onError crash: ", e)
                 }
             })
     }
@@ -154,8 +163,8 @@ class RxJava2TutorialsFragment : Fragment() {
             .getPosts( )
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .flatMap( object :  io.reactivex.functions.Function< List<Post> , ObservableSource<Post>> {
-                @Throws
+            .flatMap( object : io.reactivex.functions.Function< List<Post> , ObservableSource<Post>> {
+                //@Throws
                 override fun apply( posts: List<Post> ) : ObservableSource<Post>  {
                     adapter?.setPosts(posts.toMutableList())
                     return Observable.fromIterable(posts)
@@ -170,10 +179,14 @@ class RxJava2TutorialsFragment : Fragment() {
         val resultPostComments = setupRetrofitFlatMap()
             .getComments( post.id )
             .map { comments ->
-//                That is good example to use with flatMap.. Then you can see, that execution of flatMap is not in the same order.. flatMap get executed randomly
+
                 val delay: Int = (Random().nextInt(3) + 1) * 1000 // sleep thread for x ms
 
-                Thread.sleep(delay.toLong())
+                try {
+                    Thread.sleep(delay.toLong())
+                } catch (e: InterruptedException) {
+                    Thread.currentThread().interrupt() // restore interrupted status
+                }
                 Log.d(
                     TAG,
                     "apply: sleeping thread " + Thread.currentThread()
@@ -182,10 +195,19 @@ class RxJava2TutorialsFragment : Fragment() {
 
                 post.comments = comments
                 post
+
             }
             .subscribeOn(Schedulers.io())
 
         return resultPostComments
+    }
+
+    suspend fun insert(data: String): String = suspendCoroutine { cont ->
+        //put logic here
+        cont.resume("Done")
+
+        //if error use this
+        cont.resumeWithException(Exception("Error"))
     }
 
     private fun setupRetrofitFlatMap(): GithubRepositoryApi {
@@ -226,6 +248,10 @@ class RxJava2TutorialsFragment : Fragment() {
         return requestInterface.searchGithubRepositoryWithRxJava2("java", 1, sizeOfGithubRepos)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
+            .onErrorReturn { error ->
+                print("onError crash: ${error}")
+                throw  error
+            }
             .subscribe(this::handleResponse)
     }
 
@@ -247,8 +273,8 @@ class RxJava2TutorialsFragment : Fragment() {
             .takeWhile(object : Predicate<Long?> {
                 // stop the process if more than 5 seconds passes
                 @Throws(java.lang.Exception::class)
-                override fun test(aLong: Long): Boolean {
-                    return aLong <= 5
+                override fun test(longNumber: Long): Boolean {
+                    return longNumber <= 5
                 }
             })
             .observeOn(AndroidSchedulers.mainThread())

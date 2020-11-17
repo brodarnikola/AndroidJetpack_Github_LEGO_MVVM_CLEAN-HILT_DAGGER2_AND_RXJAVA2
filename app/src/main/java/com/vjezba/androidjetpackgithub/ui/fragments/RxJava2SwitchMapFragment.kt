@@ -16,16 +16,13 @@
 
 package com.vjezba.androidjetpackgithub.ui.fragments
 
-import android.R
 import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.vjezba.androidjetpackgithub.databinding.FragmentRxjava2SwitchMapBinding
 import com.vjezba.androidjetpackgithub.ui.adapters.RxJava2SwitchMapAdapter
@@ -38,7 +35,6 @@ import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
-import io.reactivex.functions.Predicate
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.activity_languages_main.*
@@ -47,7 +43,6 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
-import kotlin.jvm.Throws
 
 
 @AndroidEntryPoint
@@ -129,34 +124,27 @@ class RxJava2SwitchMapFragment : Fragment(), RxJava2SwitchMapAdapter.OnPostClick
                     return Observable // simulate slow network speed with interval + takeWhile + filter operators
                         .interval(PERIOD.toLong(), TimeUnit.MILLISECONDS)
                         .subscribeOn(AndroidSchedulers.mainThread())
-                        .takeWhile(object : Predicate<Long> {
-                            // stop the process if more than 5 seconds passes
-                            @Throws(Exception::class)
-                            override fun test(aLong: Long): Boolean {
-                                Log.d(
-                                    TAG,
-                                    "test: " + Thread.currentThread()
-                                        .name + ", " + aLong
-                                )
-                                progress_bar.setMax(3000 - PERIOD)
-                                progress_bar.setProgress(
-                                    (aLong * PERIOD + PERIOD).toString().toInt()
-                                )
-                                return aLong <= 3000 / PERIOD
-                            }
-                        })
-                        .filter(object : Predicate<Long> {
-                            @Throws(Exception::class)
-                            override fun test(aLong: Long): Boolean {
-                                return aLong >= 3000 / PERIOD
-                            }
-                        })
-                        // flatmap to convert Long from the interval operator into a Observable<Post>
+                        .takeWhile { longNumber ->
+
+                            // stop the process if more than 2 seconds passes
+                            Log.d(
+                                TAG,
+                                "test: " + Thread.currentThread()
+                                    .name + ", " + longNumber
+                            )
+                            progress_bar.setMax(2000 - PERIOD)
+                            progress_bar.setProgress(
+                                (longNumber * PERIOD + PERIOD).toString().toInt()
+                            )
+                            longNumber <= 2000 / PERIOD
+                        }
+                        .filter { longNumber -> longNumber >= 2000 / PERIOD }
+                        // flatmap to convert Long from the filter operator into a Observable<Post>
                         .subscribeOn(Schedulers.io())
                         .flatMap(object : io.reactivex.functions.Function<Long?, ObservableSource<Post?>> {
                             @Throws(Exception::class)
                             override fun apply(longNumber: Long): ObservableSource<Post?> {
-                                return setupRetrofitFlatMap().getPost(userClickedPosition)
+                                return setupRetrofitFlatMap().getPost(post.id)
                             }
                         })
                 }

@@ -1,8 +1,10 @@
 package com.vjezba.androidjetpackgithub.viewmodels
 
+import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
+import com.vjezba.domain.model.RepositoryDetailsResponse
 import com.vjezba.domain.model.RepositoryResponse
 import com.vjezba.domain.repository.GithubRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -27,8 +29,8 @@ class RxJava2ViewModel @ViewModelInject constructor (
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .onErrorReturn { error ->
-                    print("onError crash: ${error}")
-                    throw error
+                    Log.e(TAG, "onError received: ${error}")
+                    RepositoryResponse(0, false, listOf())
                 }
             )
         }

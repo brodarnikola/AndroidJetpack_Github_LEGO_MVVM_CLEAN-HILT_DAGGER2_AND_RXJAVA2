@@ -28,12 +28,17 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
 import com.vjezba.androidjetpackgithub.databinding.FragmentRxjava2TutorialBinding
 import com.vjezba.androidjetpackgithub.ui.adapters.ReposRxJava2FlatMapAdapter
 import com.vjezba.androidjetpackgithub.viewmodels.RxJava2ViewModel
+import com.vjezba.data.Comment
 import com.vjezba.data.Post
 import com.vjezba.data.networking.GithubRepositoryApi
+import com.vjezba.data.networking.model.RepositoryDetailsResponseApi
 import com.vjezba.data.networking.model.RepositoryResponseApi
+import com.vjezba.domain.model.RepositoryResponse
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.Observable
 import io.reactivex.ObservableSource
@@ -153,7 +158,7 @@ class RxJava2TutorialsFragment : Fragment() {
                 }
 
                 override fun onError(e: Throwable) {
-                    Log.e(TAG, "onError crash: ", e)
+                    Log.e(TAG, "onError received: ", e)
                 }
             })
     }
@@ -170,8 +175,11 @@ class RxJava2TutorialsFragment : Fragment() {
                     return Observable.fromIterable(posts)
                         .subscribeOn(Schedulers.io())
                 }
-
             })
+            .onErrorReturn { error ->
+                Log.e(TAG, "onError received: ${error}")
+                Post()
+            }
         return resultPost
     }
 
@@ -186,6 +194,8 @@ class RxJava2TutorialsFragment : Fragment() {
                     Thread.sleep(delay.toLong())
                 } catch (e: InterruptedException) {
                     Thread.currentThread().interrupt() // restore interrupted status
+                } catch (exception: Exception) {
+                    Log.e(TAG, "onError received: ${exception}")
                 }
                 Log.d(
                     TAG,
@@ -198,16 +208,12 @@ class RxJava2TutorialsFragment : Fragment() {
 
             }
             .subscribeOn(Schedulers.io())
+            .onErrorReturn { error ->
+                Log.e(TAG, "onError received: ${error}")
+                Post()
+            }
 
         return resultPostComments
-    }
-
-    suspend fun insert(data: String): String = suspendCoroutine { cont ->
-        //put logic here
-        cont.resume("Done")
-
-        //if error use this
-        cont.resumeWithException(Exception("Error"))
     }
 
     private fun setupRetrofitFlatMap(): GithubRepositoryApi {
@@ -246,18 +252,22 @@ class RxJava2TutorialsFragment : Fragment() {
 
     private fun searchGithubRepos(requestInterface: GithubRepositoryApi, sizeOfGithubRepos: Int): Disposable? {
         return requestInterface.searchGithubRepositoryWithRxJava2("java", 1, sizeOfGithubRepos)
-            .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
             .onErrorReturn { error ->
-                print("onError crash: ${error}")
-                throw  error
+                Log.e(TAG, "onError received: ${error}")
+                RepositoryResponseApi(0, false, listOf())
             }
-            .subscribe(this::handleResponse)
+            .subscribe(this::handleResponse, this::onError)
+    }
+
+    private fun onError(error: Throwable) {
+        Log.e(TAG, "onError received: ${error}")
     }
 
     private fun handleResponse(repositoryResponseApi: RepositoryResponseApi) {
 
-        Log.d(ContentValues.TAG, "Size of composite disposable stream and rest api from github: " + repositoryResponseApi.items.size)
+        Log.d(TAG, "Size of composite disposable stream and rest api from github: " + repositoryResponseApi.items.size)
         var reposResult = ""
         repositoryResponseApi.items.forEach { repos ->
             reposResult += "Name of repository: " + repos.name + "\n"
@@ -309,7 +319,7 @@ class RxJava2TutorialsFragment : Fragment() {
             .map { i: Int -> i * i }
             .filter { i: Int -> i > 10 }
             .subscribe { x: Int? ->
-                Log.d(ContentValues.TAG, "Numbers greather than 10 are: " + x)
+                Log.d(TAG, "Numbers greather than 10 are: " + x)
                 println(x) }
     }
 
@@ -317,24 +327,24 @@ class RxJava2TutorialsFragment : Fragment() {
         return object : io.reactivex.Observer<String?> {
 
             override fun onNext(s: String) {
-                Log.d(ContentValues.TAG, "Name: $s")
+                Log.d(TAG, "Name: $s")
             }
 
             override fun onError(e: Throwable) {
                 Log.e(
-                    ContentValues.TAG,
+                    TAG,
                     "onError: " + e.message
                 )
             }
 
             override fun onComplete() {
                 Log.d(
-                    ContentValues.TAG,
+                    TAG,
                     "All items are emitted!"
                 )
             }
             override fun onSubscribe(d: Disposable) {
-                Log.d(ContentValues.TAG, "onSubscribe")
+                Log.d(TAG, "onSubscribe")
             }
         }
     }

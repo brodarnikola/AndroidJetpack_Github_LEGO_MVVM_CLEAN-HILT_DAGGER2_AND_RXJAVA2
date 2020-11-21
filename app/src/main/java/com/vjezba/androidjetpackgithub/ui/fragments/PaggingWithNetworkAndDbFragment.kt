@@ -71,12 +71,12 @@ class PaggingWithNetworkAndDbFragment : Fragment() {
         automaticIncreaseNumberByOne?.cancel()
         automaticIncreaseNumberByOne = lifecycleScope.launch {
             while (true) {
+                delay(UPDATE_PERIOD)
                 try {
                     handleUpdate()
                 } catch (ex: Exception) {
                     Log.v("ERROR","Periodic remote-update failed...", ex)
                 }
-                delay(UPDATE_PERIOD)
             }
         }
     }

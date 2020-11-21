@@ -70,6 +70,8 @@ interface GithubRepositoryApi {
         @Query("per_page") perPage: Int
     ): Observable<RepositoryResponseApi>
 
+
+
     @GET("posts")
     fun getPosts(): Observable<List<Post>>
 

@@ -138,7 +138,6 @@ class RxJava2TutorialsFragment : Fragment() {
     private fun rxJava2FlatMapExample() {
         initRecyclerView()
         getPostObservable()
-            .subscribeOn(Schedulers.io())
             .flatMap { posts ->
                 getCommentsObservable(posts)
             }

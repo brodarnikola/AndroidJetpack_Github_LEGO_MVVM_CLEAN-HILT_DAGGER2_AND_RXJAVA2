@@ -76,7 +76,8 @@ class LanguagesActivity : AppCompatActivity() {
             setOf(
                 R.id.view_pager_fragment,
                 R.id.paggin_with_network_and_db,
-                R.id.rxjava2_tutorial
+                R.id.rxjava2_tutorial,
+                R.id.lego_fragment
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)

@@ -17,13 +17,14 @@
 package com.vjezba.data.repository
 
 import androidx.paging.PagingSource
+import com.vjezba.data.di.GithubNetwork
 import com.vjezba.data.networking.GithubRepositoryApi
 import com.vjezba.data.networking.model.RepositoryDetailsResponseApi
 
 private const val GITHUB_REPOSITORY_STARTING_PAGE_INDEX = 1
 
 class GithubRepositorySource(
-    private val service: GithubRepositoryApi,
+    @GithubNetwork private val service: GithubRepositoryApi,
     private val query: String
 ) : PagingSource<Int, RepositoryDetailsResponseApi>() {
 

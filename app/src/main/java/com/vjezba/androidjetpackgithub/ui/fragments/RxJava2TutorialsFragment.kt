@@ -16,7 +16,6 @@
 
 package com.vjezba.androidjetpackgithub.ui.fragments
 
-import android.content.ContentValues
 import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
@@ -28,17 +27,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.google.gson.annotations.Expose
-import com.google.gson.annotations.SerializedName
 import com.vjezba.androidjetpackgithub.databinding.FragmentRxjava2TutorialBinding
 import com.vjezba.androidjetpackgithub.ui.adapters.ReposRxJava2FlatMapAdapter
 import com.vjezba.androidjetpackgithub.viewmodels.RxJava2ViewModel
-import com.vjezba.data.Comment
 import com.vjezba.data.Post
 import com.vjezba.data.networking.GithubRepositoryApi
-import com.vjezba.data.networking.model.RepositoryDetailsResponseApi
 import com.vjezba.data.networking.model.RepositoryResponseApi
-import com.vjezba.domain.model.RepositoryResponse
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.Observable
 import io.reactivex.ObservableSource
@@ -57,9 +51,6 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
 import java.util.concurrent.TimeUnit
-import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
-import kotlin.coroutines.suspendCoroutine
 import kotlin.jvm.Throws
 
 

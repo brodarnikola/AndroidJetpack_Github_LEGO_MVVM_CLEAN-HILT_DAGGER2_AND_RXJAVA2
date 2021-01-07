@@ -4,6 +4,7 @@ import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
+import com.vjezba.data.di.GithubNetwork
 import com.vjezba.domain.model.RepositoryDetailsResponse
 import com.vjezba.domain.model.RepositoryResponse
 import com.vjezba.domain.repository.GithubRepository
@@ -15,7 +16,7 @@ import org.reactivestreams.Subscription
 
 
 class RxJava2ViewModel @ViewModelInject constructor (
-    private val repository: GithubRepository
+    @GithubNetwork private val repository: GithubRepository
 ) : ViewModel() {
 
     private val authUser: MediatorLiveData<RepositoryResponse> = MediatorLiveData<RepositoryResponse>()

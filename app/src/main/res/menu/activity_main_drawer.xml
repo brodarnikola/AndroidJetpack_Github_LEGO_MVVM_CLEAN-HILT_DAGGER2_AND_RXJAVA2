@@ -17,5 +17,11 @@
             android:id="@+id/rxjava2_tutorial"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/menu_rxjava2" />
+
+        <item
+            android:id="@+id/lego_fragment"
+            android:icon="@drawable/ic_doggo_24dp"
+            android:title="LEGO EXAMPLE" />
+
     </group>
 </menu>

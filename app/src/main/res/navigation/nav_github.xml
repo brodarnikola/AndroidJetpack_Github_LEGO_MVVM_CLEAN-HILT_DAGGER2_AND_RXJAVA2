@@ -36,6 +36,14 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
 
+        <action
+            android:id="@+id/action_view_pager_fragment_to_lego_theme_fragment"
+            app:destination="@id/lego_fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
     </fragment>
 
     <fragment
@@ -114,6 +122,64 @@
         android:name="com.vjezba.androidjetpackgithub.ui.fragments.RxJava2SwitchMapFragment"
         android:label="Switchmap and flatmap example"
         tools:layout="@layout/fragment_rxjava2_switch_map" />
+
+
+    <fragment
+        android:id="@+id/lego_fragment"
+        android:name="com.vjezba.androidjetpackgithub.ui.fragments.LegoThemeFragment"
+        android:label="@string/lego_title"
+        tools:layout="@layout/fragment_lego_themes" >
+
+        <action
+            android:id="@+id/action_lego_theme_fragment_to_lego_sets_fragment"
+            app:destination="@id/legosets_fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/legosets_fragment"
+        android:name="com.vjezba.androidjetpackgithub.ui.fragments.LegoSetsFragment"
+        android:label="LEGO SETS"
+        tools:layout="@layout/fragment_legosets">
+
+        <argument
+            android:name="themeId"
+            app:argType="integer"
+            android:defaultValue="-1"/>
+
+        <argument
+            android:name="themeName"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null"/>
+
+        <action
+            android:id="@+id/action_to_legoset_detail_fragment"
+            app:destination="@id/legoset_detail_fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/legoset_detail_fragment"
+        android:name="com.vjezba.androidjetpackgithub.ui.fragments.LegoSetFragment"
+        android:label="LEGO DETAILS TITLE"
+        tools:layout="@layout/fragment_lego_set">
+
+        <argument
+            android:name="id"
+            app:argType="string" />
+    </fragment>
+
+
+
 
 
 </navigation>

@@ -43,17 +43,24 @@ import java.util.Calendar
 class RepositoryModule {
 
     @Provides
-    fun provideAllLanguagesFromRestApiNetwork( appDatabase: AppDatabase, githubRepositoryApi: GithubRepositoryApi, dbMapper : DbMapper) : GithubRepository {
+    @GithubNetwork
+    fun provideAllLanguagesFromRestApiNetwork( appDatabase: AppDatabase,
+                                               @GithubNetwork githubRepositoryApi: GithubRepositoryApi,
+                                               dbMapper : DbMapper) : GithubRepository {
         return GithubRepositoryImpl(appDatabase, githubRepositoryApi, dbMapper)
     }
 
     @Provides
-    fun provideGetAllSavedLanguages(savedLanguageDao : SavedLanguagesDAO, dbMapper : DbMapper) : SavedLanguagesRepository {
+    @GithubNetwork
+    fun provideGetAllSavedLanguages( savedLanguageDao : SavedLanguagesDAO, dbMapper : DbMapper) : SavedLanguagesRepository {
         return SavedLanguagesRepositoryImpl(savedLanguageDao, dbMapper)
     }
 
     @Provides
-    fun provideGetAllLanguages(languagesDao : LanguagesDao, dbMapper : DbMapper) : LanguagesRepository {
+    @GithubNetwork
+    fun provideGetAllLanguages(
+        languagesDao : LanguagesDao,
+        dbMapper : DbMapper) : LanguagesRepository {
         return LanguagesRepositoryImpl(languagesDao, dbMapper)
     }
 }

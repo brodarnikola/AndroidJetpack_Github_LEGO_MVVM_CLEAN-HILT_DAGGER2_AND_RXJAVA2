@@ -16,7 +16,7 @@ import javax.inject.Inject
 class LegoSetPageDataSource @Inject constructor(
     private val themeId: Int? = null,
     @LegoNetwork private val dataSource: LegoSetRemoteDataSource,
-    @LegoNetwork private val dao: LegoSetDao,
+    private val dao: LegoSetDao,
     private val scope: CoroutineScope) : PageKeyedDataSource<Int, LegoSet>() {
 
     override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, LegoSet>) {

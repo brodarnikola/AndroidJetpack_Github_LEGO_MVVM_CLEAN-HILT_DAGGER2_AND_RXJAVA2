@@ -12,7 +12,7 @@ import javax.inject.Inject
 class LegoSetPageDataSourceFactory @Inject constructor(
     private val themeId: Int? = null,
     @LegoNetwork private val dataSource: LegoSetRemoteDataSource,
-    @LegoNetwork private val dao: LegoSetDao,
+    private val dao: LegoSetDao,
     private val scope: CoroutineScope) : DataSource.Factory<Int, LegoSet>() {
 
     private val liveData = MutableLiveData<LegoSetPageDataSource>()

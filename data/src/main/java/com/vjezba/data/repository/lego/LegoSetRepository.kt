@@ -16,7 +16,7 @@ import javax.inject.Singleton
  * Repository module for handling data operations.
  */
 
-class LegoSetRepository @Inject constructor(@LegoNetwork private val dao: LegoSetDao,
+class LegoSetRepository @Inject constructor(private val dao: LegoSetDao,
                                             @LegoNetwork private val legoSetRemoteDataSource: LegoSetRemoteDataSource
 ) {
 

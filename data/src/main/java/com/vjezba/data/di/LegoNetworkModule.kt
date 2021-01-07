@@ -19,21 +19,12 @@ package com.vjezba.data.di
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.google.gson.Gson
 import com.vjezba.data.BuildConfig
-import com.vjezba.data.database.AppDatabase
-import com.vjezba.data.database.dao.LegoSetDao
-import com.vjezba.data.database.dao.LegoThemeDao
 import com.vjezba.data.lego.api.AuthInterceptor
 import com.vjezba.data.lego.api.LegoService
-import com.vjezba.data.lego.repository.LegoSetRemoteDataSource
-import com.vjezba.data.lego.repository.LegoSetRepository
-import com.vjezba.data.lego.repository.LegoThemeRemoteDataSource
-import com.vjezba.data.lego.repository.LegoThemeRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -96,56 +87,6 @@ class LegoNetworkModule {
             .build()
             .create(LegoService::class.java)
     }
-
-    @Singleton
-    @Provides
-    @LegoNetwork
-    fun provideLegoThemeRemoteDataSource(
-        @LegoNetwork legoService: LegoService)
-            =
-        LegoThemeRemoteDataSource(legoService)
-
-    @Singleton
-    @Provides
-    @LegoNetwork
-    fun provideLegoSetRemoteDataSource(
-        @LegoNetwork legoService: LegoService)
-            =
-        LegoSetRemoteDataSource(legoService)
-
-    @Singleton
-    @Provides
-    @LegoNetwork
-    fun provideLegoSetDao(db: AppDatabase) = db.legoSetDao()
-
-
-    @Singleton
-    @Provides
-    @LegoNetwork
-    fun provideLegoThemeDao(db: AppDatabase) = db.legoThemeDao()
-
-    @CoroutineScropeIO
-    @Provides
-    fun provideCoroutineScopeIO() = CoroutineScope(Dispatchers.IO)
-
-
-    @Singleton
-    @Provides
-    @LegoNetwork
-    fun provideLegoThemeRepository(
-        @LegoNetwork dao: LegoThemeDao,
-        @LegoNetwork remoteSource: LegoThemeRemoteDataSource)
-            =
-        LegoThemeRepository(dao, remoteSource)
-
-    @Singleton
-    @Provides
-    @LegoNetwork
-    fun provideLegoSetRepository(
-        @LegoNetwork dao: LegoSetDao,
-        @LegoNetwork legoSetRemoteDataSource: LegoSetRemoteDataSource)
-            =
-        LegoSetRepository(dao, legoSetRemoteDataSource)
 
 
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.vjezba.data.di
+package com.vjezba.data.di.lego
 
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.google.gson.Gson
@@ -71,7 +71,7 @@ class LegoNetworkModule {
     @LegoNetwork
     fun provideLegoRetrofit(
         @LegoNetwork gson:  Gson,
-        @LegoNetwork  client: OkHttpClient): Retrofit.Builder {
+        @LegoNetwork client: OkHttpClient): Retrofit.Builder {
         return Retrofit.Builder()
             .client(client)
             .baseUrl(LegoService.ENDPOINT)

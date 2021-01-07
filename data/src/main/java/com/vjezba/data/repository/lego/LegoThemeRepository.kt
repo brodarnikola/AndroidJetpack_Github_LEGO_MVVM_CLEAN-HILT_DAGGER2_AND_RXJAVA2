@@ -1,11 +1,9 @@
 package com.vjezba.data.lego.repository
 
 import com.vjezba.data.database.dao.LegoThemeDao
-import com.vjezba.data.di.LegoNetwork
+import com.vjezba.data.di.lego.LegoNetwork
 import com.vjezba.data.lego.data.resultLiveData
-import com.vjezba.data.lego.repository.LegoThemeRemoteDataSource
 import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Repository module for handling data operations.

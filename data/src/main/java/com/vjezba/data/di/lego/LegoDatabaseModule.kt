@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.vjezba.data.di
+package com.vjezba.data.di.lego
 
 import com.vjezba.data.database.AppDatabase
 import dagger.Module

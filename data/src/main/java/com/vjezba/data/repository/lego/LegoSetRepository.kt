@@ -6,11 +6,10 @@ import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.vjezba.data.database.dao.LegoSetDao
 import com.vjezba.data.database.model.LegoSet
-import com.vjezba.data.di.LegoNetwork
+import com.vjezba.data.di.lego.LegoNetwork
 import com.vjezba.data.lego.data.resultLiveData
 import kotlinx.coroutines.CoroutineScope
 import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Repository module for handling data operations.

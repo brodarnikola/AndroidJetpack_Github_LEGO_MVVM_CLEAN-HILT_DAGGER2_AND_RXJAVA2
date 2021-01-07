@@ -5,7 +5,7 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 
-class Post /*constructor(val mUserId: Int, val mId: Int, val title: String?, var mComments: List<Comment> )*/ {
+class Post  {
 
     @SerializedName("userId")
     @Expose

@@ -1,6 +1,6 @@
 package com.vjezba.data.lego.repository
 
-import com.vjezba.data.di.LegoNetwork
+import com.vjezba.data.di.lego.LegoNetwork
 import com.vjezba.data.lego.api.BaseDataSource
 import com.vjezba.data.lego.api.LegoService
 import javax.inject.Inject

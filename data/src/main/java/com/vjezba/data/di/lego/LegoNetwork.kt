@@ -1,4 +1,4 @@
-package com.vjezba.data.di
+package com.vjezba.data.di.lego
 
 import java.lang.annotation.Documented
 import javax.inject.Qualifier

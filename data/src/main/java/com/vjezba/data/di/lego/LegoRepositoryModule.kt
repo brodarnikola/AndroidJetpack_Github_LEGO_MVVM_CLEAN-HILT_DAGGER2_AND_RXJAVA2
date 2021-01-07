@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.vjezba.data.di
+package com.vjezba.data.di.lego
 
 import com.vjezba.data.database.dao.LegoSetDao
 import com.vjezba.data.database.dao.LegoThemeDao
@@ -29,7 +29,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityComponent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import javax.inject.Singleton
 
 /**
  * Type converters to allow Room to reference complex data types.

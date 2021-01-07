@@ -3,7 +3,7 @@ package com.vjezba.data.lego.repository
 import androidx.paging.PageKeyedDataSource
 import com.vjezba.data.database.dao.LegoSetDao
 import com.vjezba.data.database.model.LegoSet
-import com.vjezba.data.di.LegoNetwork
+import com.vjezba.data.di.lego.LegoNetwork
 import com.vjezba.data.lego.data.Result
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope

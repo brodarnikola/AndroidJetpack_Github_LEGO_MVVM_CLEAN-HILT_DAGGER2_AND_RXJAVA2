@@ -5,7 +5,7 @@ import androidx.paging.DataSource
 import androidx.paging.PagedList
 import com.vjezba.data.database.dao.LegoSetDao
 import com.vjezba.data.database.model.LegoSet
-import com.vjezba.data.di.LegoNetwork
+import com.vjezba.data.di.lego.LegoNetwork
 import kotlinx.coroutines.CoroutineScope
 import javax.inject.Inject
 

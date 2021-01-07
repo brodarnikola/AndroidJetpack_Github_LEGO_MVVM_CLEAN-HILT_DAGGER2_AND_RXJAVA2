@@ -16,13 +16,18 @@
 
 package com.vjezba.data.di
 
+import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.google.gson.Gson
 import com.vjezba.data.BuildConfig
 import com.vjezba.data.database.AppDatabase
+import com.vjezba.data.database.dao.LegoSetDao
+import com.vjezba.data.database.dao.LegoThemeDao
 import com.vjezba.data.lego.api.AuthInterceptor
 import com.vjezba.data.lego.api.LegoService
 import com.vjezba.data.lego.repository.LegoSetRemoteDataSource
+import com.vjezba.data.lego.repository.LegoSetRepository
 import com.vjezba.data.lego.repository.LegoThemeRemoteDataSource
+import com.vjezba.data.lego.repository.LegoThemeRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -40,47 +45,24 @@ import javax.inject.Singleton
 @Module
 class LegoNetworkModule {
 
-
     @Provides
     @LegoNetwork
     fun provideLoggingInterceptor() =
         HttpLoggingInterceptor().apply { level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE }
 
-    /*@Provides
-    @Singleton
-    @LegoNetwork
-    fun provideOkHttpClient(@LegoNetwork interceptor: HttpLoggingInterceptor): OkHttpClient =
-         OkHttpClient.Builder().addInterceptor(interceptor)
-             .addNetworkInterceptor(StethoInterceptor())
-             .build()*/
-
     @Provides
     @Singleton
     @LegoNetwork
-    fun provideTestOkHttpClient(@LegoNetwork interceptor: HttpLoggingInterceptor): OkHttpClient {
+    fun provideTestOkHttpClient(): OkHttpClient {
         val okHttpClient = OkHttpClient()
-        return okHttpClient.newBuilder() .addInterceptor(
+        return okHttpClient.newBuilder()
+            .addNetworkInterceptor(StethoInterceptor()
+        ).addInterceptor(
             AuthInterceptor(
                 "9bb7cbfb4e7551e06d2c743ad53f1a5a"
-                //BuildConfig.API_DEVELOPER_TOKEN
             )
         ).build()
     }
-
-    /*@Provides
-    @Singleton
-    @LegoNetwork
-    fun providePrivateOkHttpClient(
-        @LegoNetwork upstreamClient: OkHttpClient
-    ): OkHttpClient {
-        return upstreamClient.newBuilder()
-            .addInterceptor(
-                AuthInterceptor(
-                    "9bb7cbfb4e7551e06d2c743ad53f1a5a"
-                    //BuildConfig.API_DEVELOPER_TOKEN
-                )
-            ).build()
-    }*/
 
     @Provides
     @Singleton
@@ -92,9 +74,6 @@ class LegoNetworkModule {
     @LegoNetwork
     fun provideGsonConverterFactory( @LegoNetwork gson: Gson): GsonConverterFactory =
         GsonConverterFactory.create(gson)
-
-
-
 
     @Singleton
     @Provides
@@ -117,18 +96,6 @@ class LegoNetworkModule {
             .build()
             .create(LegoService::class.java)
     }
-
-
-
-
-
-
-
-
-
-
-
-
 
     @Singleton
     @Provides
@@ -162,50 +129,23 @@ class LegoNetworkModule {
     fun provideCoroutineScopeIO() = CoroutineScope(Dispatchers.IO)
 
 
-
-
-
-
-
-
-
-    /*@Singleton
+    @Singleton
     @Provides
     @LegoNetwork
-    fun provideLegoService(@LegoNetwork okhttpClient: OkHttpClient,
-                           @LegoNetwork converterFactory: GsonConverterFactory
-    ) = provideService(okhttpClient, converterFactory, LegoService::class.java)
-
+    fun provideLegoThemeRepository(
+        @LegoNetwork dao: LegoThemeDao,
+        @LegoNetwork remoteSource: LegoThemeRemoteDataSource)
+            =
+        LegoThemeRepository(dao, remoteSource)
 
     @Singleton
     @Provides
     @LegoNetwork
-    fun provideLegoServiceRestApi(
-        @LegoNetwork retrofit: Retrofit.Builder): LegoService {
-        return retrofit
-            .build()
-            .create(LegoService::class.java)
-    }
-
-    private fun createRetrofit(
-        @LegoNetwork okhttpClient: OkHttpClient,
-        @LegoNetwork converterFactory: GsonConverterFactory
-    ): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl(LegoService.ENDPOINT)
-            .client(okhttpClient)
-            .addConverterFactory(converterFactory)
-            .build()
-    }
-
-    private fun <T> provideService(@LegoNetwork okhttpClient: OkHttpClient,
-                                   @LegoNetwork converterFactory: GsonConverterFactory,
-                                   @LegoNetwork clazz: Class<T>): T {
-        return createRetrofit(okhttpClient, converterFactory).create(clazz)
-    }
-*/
-
-
+    fun provideLegoSetRepository(
+        @LegoNetwork dao: LegoSetDao,
+        @LegoNetwork legoSetRemoteDataSource: LegoSetRemoteDataSource)
+            =
+        LegoSetRepository(dao, legoSetRemoteDataSource)
 
 
 }

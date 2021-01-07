@@ -10,9 +10,9 @@ import javax.inject.Singleton
 /**
  * Repository module for handling data operations.
  */
-@Singleton
+
 class LegoThemeRepository @Inject constructor(@LegoNetwork private val dao: LegoThemeDao,
-                                              @LegoNetwork private val remoteSource: LegoThemeRemoteDataSource
+                                                  @LegoNetwork private val remoteSource: LegoThemeRemoteDataSource
 ) {
 
     val themes = resultLiveData(

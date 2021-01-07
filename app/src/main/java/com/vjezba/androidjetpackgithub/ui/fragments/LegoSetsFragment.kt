@@ -1,7 +1,10 @@
 package com.vjezba.androidjetpackgithub.ui.fragments
 
 import android.os.Bundle
+import android.os.Parcelable
+import android.util.Log
 import android.view.*
+import androidx.annotation.NonNull
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
@@ -19,6 +22,7 @@ import com.vjezba.androidjetpackgithub.ui.utilities.hide
 import com.vjezba.androidjetpackgithub.viewmodels.LegoSetsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_languages_main.*
+
 
 @AndroidEntryPoint
 class LegoSetsFragment : Fragment() {
@@ -66,6 +70,13 @@ class LegoSetsFragment : Fragment() {
         return binding.root
     }
 
+    private fun subscribeUi(adapter: LegoSetAdapter) {
+        viewModel.legoSets.observe(viewLifecycleOwner) {
+            binding.progressBar.hide()
+            adapter.submitList(it)
+        }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_list_representation, menu)
         setDataRepresentationIcon(menu.findItem(R.id.list))
@@ -76,41 +87,40 @@ class LegoSetsFragment : Fragment() {
             R.id.list -> {
                 isLinearLayoutManager = !isLinearLayoutManager
                 setDataRepresentationIcon(item)
+                val lastPosition = findLastPositionInRecyclerView()
                 setLayoutManager()
+                scrollToLastPositionWhenSwicthingLayouts(lastPosition)
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
     }
 
-    private fun subscribeUi(adapter: LegoSetAdapter) {
-        viewModel.legoSets.observe(viewLifecycleOwner) {
-            binding.progressBar.hide()
-            adapter.submitList(it)
+    private fun findLastPositionInRecyclerView() : Int {
+        var scrollPosition = 0
+        // If a layout manager has already been set, get current scroll position.
+        if (binding.recyclerView.layoutManager != null) {
+            scrollPosition = (binding.recyclerView.layoutManager as LinearLayoutManager)
+                .findFirstCompletelyVisibleItemPosition()
         }
+        return scrollPosition
     }
 
     private fun setLayoutManager() {
-        val recyclerView = binding.recyclerView
-
-        var scrollPosition = 0
-        // If a layout manager has already been set, get current scroll position.
-        if (recyclerView.layoutManager != null) {
-            scrollPosition = (recyclerView.layoutManager as LinearLayoutManager)
-                    .findFirstCompletelyVisibleItemPosition()
-        }
 
         if (isLinearLayoutManager) {
-            recyclerView.removeItemDecoration(gridDecoration)
-            recyclerView.addItemDecoration(linearDecoration)
-            recyclerView.layoutManager = linearLayoutManager
+            binding.recyclerView.removeItemDecoration(gridDecoration)
+            binding.recyclerView.addItemDecoration(linearDecoration)
+            binding.recyclerView.layoutManager = linearLayoutManager
         } else {
-            recyclerView.removeItemDecoration(linearDecoration)
-            recyclerView.addItemDecoration(gridDecoration)
-            recyclerView.layoutManager = gridLayoutManager
+            binding.recyclerView.removeItemDecoration(linearDecoration)
+            binding.recyclerView.addItemDecoration(gridDecoration)
+            binding.recyclerView.layoutManager = gridLayoutManager
         }
+    }
 
-        recyclerView.scrollToPosition(scrollPosition)
+    private fun scrollToLastPositionWhenSwicthingLayouts(lastPosition: Int) {
+        binding.recyclerView.scrollToPosition(lastPosition)
     }
 
     private fun setDataRepresentationIcon(item: MenuItem) {

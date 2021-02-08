@@ -23,5 +23,11 @@
             android:icon="@drawable/ic_doggo_24dp"
             android:title="LEGO EXAMPLE" />
 
+
+        <item
+            android:id="@+id/fingerprint_fragment"
+            android:icon="@drawable/ic_doggo_24dp"
+            android:title="FINGER PRINT EXAMPLE" />
+
     </group>
 </menu>

@@ -20,12 +20,13 @@ import androidx.lifecycle.map
 import com.vjezba.data.database.dao.SavedLanguagesDAO
 import com.vjezba.data.database.mapper.DbMapper
 import com.vjezba.data.database.model.SavedLanguagesDb
+import com.vjezba.data.di.GithubNetwork
 import com.vjezba.domain.model.SavedAndAllLanguages
 import com.vjezba.domain.model.SavedLanguages
 import com.vjezba.domain.repository.SavedLanguagesRepository
 
 class SavedLanguagesRepositoryImpl constructor(
-    private val savedLanguagesDAO: SavedLanguagesDAO,
+    @GithubNetwork private val savedLanguagesDAO: SavedLanguagesDAO,
     private val dbMapper: DbMapper
 ) : SavedLanguagesRepository {
 

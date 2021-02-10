@@ -26,6 +26,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
+
 /**
  * Used to connect to the Unsplash API to fetch photos
  */
@@ -46,7 +47,7 @@ interface GithubRepositoryApi {
     ): RepositoryResponseApi
 
 
-    // example for rxjava
+    // example for rxjava2
     @GET("search/repositories")
     fun searchGithubRepositoryWithRxJava2(
         @Query("q") query: String,
@@ -69,6 +70,8 @@ interface GithubRepositoryApi {
         @Query("per_page") perPage: Int
     ): Observable<RepositoryResponseApi>
 
+
+
     @GET("posts")
     fun getPosts(): Observable<List<Post>>
 
@@ -76,5 +79,10 @@ interface GithubRepositoryApi {
     fun getComments(
         @Path("id") id: Int
     ): Observable<List<Comment>>
+
+    @GET("posts/{id}")
+    fun getPost(
+        @Path("id") id: Int
+    ): Observable<Post>
 
 }

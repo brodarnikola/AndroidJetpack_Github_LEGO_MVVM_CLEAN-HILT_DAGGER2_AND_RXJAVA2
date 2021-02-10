@@ -11,6 +11,7 @@ import com.vjezba.data.database.dao.LanguagesRemoteKeyDao
 import com.vjezba.data.database.mapper.DbMapper
 import com.vjezba.data.database.model.LanguagesRepoDb
 import com.vjezba.data.database.model.LanguagesRemoteKeyDb
+import com.vjezba.data.di.GithubNetwork
 import com.vjezba.data.networking.GithubRepositoryApi
 import retrofit2.HttpException
 import java.io.IOException
@@ -21,7 +22,7 @@ private const val GITHUB_STARTING_PAGE_INDEX = 1
 @OptIn(ExperimentalPagingApi::class)
 class PageKeyedRemoteMediator(
     private val db: AppDatabase,
-    private val redditApi: GithubRepositoryApi,
+    @GithubNetwork private val redditApi: GithubRepositoryApi,
     private val subredditName: String,
     private val dbMapper: DbMapper
 ) : RemoteMediator<Int, LanguagesRepoDb>() {

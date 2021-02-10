@@ -58,4 +58,9 @@
 
     <string name="language">Language: %s</string>
 
+
+    <string name="biometric_fingerprint_title">Fingerprint bottom sheet dialog</string>
+    <string name="biometric_fingerprint_description">Please put your finger on the place for scanning fingerprint</string>
+    <string name="biometric_fingerprint_cancel">Cancel</string>
+
 </resources>

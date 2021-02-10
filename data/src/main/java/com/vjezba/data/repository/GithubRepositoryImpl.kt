@@ -21,6 +21,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.vjezba.data.database.AppDatabase
 import com.vjezba.data.database.mapper.DbMapper
+import com.vjezba.data.di.GithubNetwork
 import com.vjezba.data.networking.GithubRepositoryApi
 import com.vjezba.domain.model.RepositoryDetailsResponse
 import com.vjezba.domain.model.RepositoryResponse
@@ -35,8 +36,8 @@ import kotlinx.coroutines.flow.map
  * RepositoryResponseApi module for handling data operations.
  */
 class GithubRepositoryImpl  constructor(
-    private val db: AppDatabase,
-    private val service: GithubRepositoryApi,
+    @GithubNetwork private val db: AppDatabase,
+    @GithubNetwork private val service: GithubRepositoryApi,
     private val dbMapper: DbMapper?)
     : GithubRepository   {
 

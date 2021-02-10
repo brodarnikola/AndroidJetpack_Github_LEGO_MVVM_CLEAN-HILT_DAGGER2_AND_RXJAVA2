@@ -20,12 +20,13 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.vjezba.data.di.GithubNetwork
 import com.vjezba.domain.model.RepositoryDetailsResponse
 import com.vjezba.domain.repository.GithubRepository
 import kotlinx.coroutines.flow.Flow
 
 class GalleryViewModel @ViewModelInject internal constructor(
-    private val repository: GithubRepository
+    @GithubNetwork private val repository: GithubRepository
 ) : ViewModel() {
 
     private var currentQueryValue: String? = null

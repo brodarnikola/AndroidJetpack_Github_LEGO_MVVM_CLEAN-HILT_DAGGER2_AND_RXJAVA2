@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 
-class Comment /*constructor( val postId: Int, val id: Int, val name: String?, val email: String?, val body: String? )*/ {
+class Comment {
 
     @Expose
     @SerializedName("postId")

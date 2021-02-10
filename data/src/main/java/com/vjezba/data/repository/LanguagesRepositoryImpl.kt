@@ -20,6 +20,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import com.vjezba.data.database.dao.LanguagesDao
 import com.vjezba.data.database.mapper.DbMapper
+import com.vjezba.data.di.GithubNetwork
 import com.vjezba.domain.model.Languages
 import com.vjezba.domain.repository.LanguagesRepository
 
@@ -27,7 +28,7 @@ import com.vjezba.domain.repository.LanguagesRepository
  * RepositoryResponseApi module for handling data operations.
  */
 class LanguagesRepositoryImpl  constructor(
-    private val languages: LanguagesDao, private val dbMapper: DbMapper)
+    @GithubNetwork private val languages: LanguagesDao, private val dbMapper: DbMapper)
     : LanguagesRepository   {
 
     override fun getLanguages() = languages.getLanguages().map { dbMapper.mapDbLanguagesToDomainLanguages(it) }

@@ -1,30 +1,45 @@
 package com.vjezba.androidjetpackgithub.viewmodels
 
+import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.LiveDataReactiveStreams
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.Observer;
+import androidx.lifecycle.*
+import com.vjezba.data.di.GithubNetwork
+import com.vjezba.domain.model.RepositoryDetailsResponse
 import com.vjezba.domain.model.RepositoryResponse
 import com.vjezba.domain.repository.GithubRepository
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.toSingle
 import io.reactivex.schedulers.Schedulers
+import org.reactivestreams.Subscriber
+import org.reactivestreams.Subscription
 
 
 class RxJava2ViewModel @ViewModelInject constructor (
-    private val repository: GithubRepository
+    @GithubNetwork private val repository: GithubRepository
 ) : ViewModel() {
 
     private val authUser: MediatorLiveData<RepositoryResponse> = MediatorLiveData<RepositoryResponse>()
 
     fun observeRepos(query: String) : LiveData<RepositoryResponse> {
-        val source: LiveData<RepositoryResponse> = LiveDataReactiveStreams.fromPublisher(
+
+        var source: LiveData<RepositoryResponse>? = null
+        try {
+            source = LiveDataReactiveStreams.fromPublisher(
             repository.getSearchRepositorieWithFlowableRxJava2(query)
                 .subscribeOn(Schedulers.io())
-        )
+                .observeOn(AndroidSchedulers.mainThread())
+                .onErrorReturn { error ->
+                    Log.e(TAG, "onError received: ${error}")
+                    RepositoryResponse(0, false, listOf())
+                }
+            )
+        }
+        catch (e : Exception) {
+            print("Exception: ${e}")
+        }
 
-        authUser.addSource(source, object : Observer<RepositoryResponse?> {
+        authUser.addSource(source!!, object : Observer<RepositoryResponse?> {
             override fun onChanged(user: RepositoryResponse?) {
                 authUser.setValue(user)
                 authUser.removeSource(source)
@@ -46,6 +61,5 @@ class RxJava2ViewModel @ViewModelInject constructor (
             _incrementNumberAutomaticallyByOne.value = number + 1
         }
     }
-
 
 }

@@ -19,6 +19,7 @@ package com.vjezba.androidjetpackgithub.viewmodels
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
+import com.vjezba.data.di.GithubNetwork
 import com.vjezba.domain.repository.LanguagesRepository
 
 /**
@@ -26,7 +27,7 @@ import com.vjezba.domain.repository.LanguagesRepository
  */
 class LanguagesListViewModel @ViewModelInject internal constructor(
     @Assisted private val savedStateHandle: SavedStateHandle,
-    languagesRepository: LanguagesRepository
+    @GithubNetwork languagesRepository: LanguagesRepository
 ) : ViewModel() {
 
     val languages  = getSavedOnlyMobilProgrammingLanguages().switchMap {

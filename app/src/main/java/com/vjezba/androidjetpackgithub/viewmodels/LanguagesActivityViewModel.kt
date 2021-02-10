@@ -19,12 +19,13 @@ package com.vjezba.androidjetpackgithub.viewmodels
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.vjezba.data.di.GithubNetwork
 import com.vjezba.domain.repository.SavedLanguagesRepository
 import kotlinx.coroutines.launch
 
 
 class LanguagesActivityViewModel @ViewModelInject constructor(
-    val savedLanguages: SavedLanguagesRepository
+    @GithubNetwork val savedLanguages: SavedLanguagesRepository
 ) : ViewModel() {
 
     fun deleteAllSavedProgrammingLanguagesOfUser() {

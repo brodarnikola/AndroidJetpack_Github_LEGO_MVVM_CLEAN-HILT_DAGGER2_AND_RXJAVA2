@@ -36,10 +36,11 @@ private const val BASE_URL = "https://api.github.com/"
 
 @InstallIn(ApplicationComponent::class)
 @Module
-class NetworkModule {
+class GithubNetworkModule {
 
     @Provides
     @Singleton
+    @GithubNetwork
     fun provideAuthInterceptorOkHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
             .build()
@@ -47,6 +48,7 @@ class NetworkModule {
 
     @Singleton
     @Provides
+    @GithubNetwork
     fun provideGsonBuilder(): Gson {
         return GsonBuilder()
             .create()
@@ -54,7 +56,10 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun provideRetrofit(gson:  Gson, client: OkHttpClient): Retrofit.Builder {
+    @GithubNetwork
+    fun provideRetrofit(
+        @GithubNetwork gson:  Gson,
+        @GithubNetwork client: OkHttpClient): Retrofit.Builder {
         return Retrofit.Builder()
             .client(client)
             .baseUrl(BASE_URL)
@@ -64,7 +69,9 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun provideGithubService(retrofit: Retrofit.Builder): GithubRepositoryApi {
+    @GithubNetwork
+    fun provideGithubService(
+        @GithubNetwork retrofit: Retrofit.Builder): GithubRepositoryApi {
         return retrofit
             .build()
             .create(GithubRepositoryApi::class.java)

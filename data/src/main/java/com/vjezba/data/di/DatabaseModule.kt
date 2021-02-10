@@ -42,12 +42,12 @@ class DatabaseModule {
     }
 
     @Provides
-    fun providePlantDao(appDatabase: AppDatabase): LanguagesDao {
+    fun providePlantDao( appDatabase: AppDatabase): LanguagesDao {
         return appDatabase.languagesDAO()
     }
 
     @Provides
-    fun provideGardenPlantingDao(appDatabase: AppDatabase): SavedLanguagesDAO {
+    fun provideGardenPlantingDao( appDatabase: AppDatabase): SavedLanguagesDAO {
         return appDatabase.savedLanguagesDAO()
     }
 

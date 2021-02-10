@@ -16,7 +16,6 @@
 
 package com.vjezba.androidjetpackgithub.ui.fragments
 
-import android.content.ContentValues
 import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
@@ -27,6 +26,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.vjezba.androidjetpackgithub.databinding.FragmentRxjava2TutorialBinding
 import com.vjezba.androidjetpackgithub.ui.adapters.ReposRxJava2FlatMapAdapter
 import com.vjezba.androidjetpackgithub.viewmodels.RxJava2ViewModel
@@ -39,6 +39,7 @@ import io.reactivex.ObservableSource
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import io.reactivex.functions.Predicate
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_languages_main.*
 import kotlinx.android.synthetic.main.fragment_rxjava2_tutorial.*
@@ -49,6 +50,7 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
+import java.util.concurrent.TimeUnit
 import kotlin.jvm.Throws
 
 
@@ -102,6 +104,11 @@ class RxJava2TutorialsFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
+        btnSwitchMap.setOnClickListener {
+            val direction = RxJava2TutorialsFragmentDirections.rxjava2TutorialFragmentToRxjava2SwitchMapFragment()
+            findNavController().navigate(direction)
+        }
+
         rxJava2Tutorials()
 
         rxJava2FlatMapExample()
@@ -122,9 +129,7 @@ class RxJava2TutorialsFragment : Fragment() {
     private fun rxJava2FlatMapExample() {
         initRecyclerView()
         getPostObservable()
-            .subscribeOn(Schedulers.io())
             .flatMap { posts ->
-                Log.d(ContentValues.TAG, "Da li ce uci unutra 777")
                 getCommentsObservable(posts)
             }
             .observeOn(AndroidSchedulers.mainThread())
@@ -143,9 +148,62 @@ class RxJava2TutorialsFragment : Fragment() {
                 }
 
                 override fun onError(e: Throwable) {
-                    Log.e(TAG, "onError: ", e)
+                    Log.e(TAG, "onError received: ", e)
                 }
             })
+    }
+
+    private fun getPostObservable() : Observable<Post> {
+        val resultPost = setupRetrofitFlatMap()
+            .getPosts( )
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .flatMap( object : io.reactivex.functions.Function< List<Post> , ObservableSource<Post>> {
+                //@Throws
+                override fun apply( posts: List<Post> ) : ObservableSource<Post>  {
+                    adapter?.setPosts(posts.toMutableList())
+                    return Observable.fromIterable(posts)
+                        .subscribeOn(Schedulers.io())
+                }
+            })
+            .onErrorReturn { error ->
+                Log.e(TAG, "onError received: ${error}")
+                Post()
+            }
+        return resultPost
+    }
+
+    private fun getCommentsObservable(post: Post) : Observable<Post> {
+        val resultPostComments = setupRetrofitFlatMap()
+            .getComments( post.id )
+            .map { comments ->
+
+                val delay: Int = (Random().nextInt(3) + 1) * 1000 // sleep thread for x ms
+
+                try {
+                    Thread.sleep(delay.toLong())
+                } catch (e: InterruptedException) {
+                    Thread.currentThread().interrupt() // restore interrupted status
+                } catch (exception: Exception) {
+                    Log.e(TAG, "onError received: ${exception}")
+                }
+                Log.d(
+                    TAG,
+                    "apply: sleeping thread " + Thread.currentThread()
+                        .name + " for " + delay.toString() + "ms"
+                )
+
+                post.comments = comments
+                post
+
+            }
+            .subscribeOn(Schedulers.io())
+            .onErrorReturn { error ->
+                Log.e(TAG, "onError received: ${error}")
+                Post()
+            }
+
+        return resultPostComments
     }
 
     private fun setupRetrofitFlatMap(): GithubRepositoryApi {
@@ -156,50 +214,9 @@ class RxJava2TutorialsFragment : Fragment() {
             .build().create(GithubRepositoryApi::class.java)
     }
 
-    private fun getPostObservable() : Observable<Post> {
-        val resultPost = setupRetrofitFlatMap()
-            .getPosts( )
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .flatMap( object :  io.reactivex.functions.Function< List<Post> , ObservableSource<Post>> {
-                @Throws
-                override fun apply( posts: List<Post> ) : ObservableSource<Post>  {
-                    Log.d(ContentValues.TAG, "Da li ce uci unutra 555")
-                    adapter?.setPosts(posts.toMutableList())
-                    return Observable.fromIterable(posts)
-                        .subscribeOn(Schedulers.io())
-                }
-
-            })
-        return resultPost
-    }
-
-    private fun getCommentsObservable(post: Post) : Observable<Post> {
-        val resultPostComments = setupRetrofitFlatMap()
-            .getComments( post.id )
-            .map { comments ->
-//                That is good example to use with flatMap.. Then you can see, that execution of flatMap is not in the same order.. flatMap get executed randomly
-                val delay: Int = (Random().nextInt(3) + 1) * 1000 // sleep thread for x ms
-
-                Thread.sleep(delay.toLong())
-                Log.d(
-                    TAG,
-                    "apply: sleeping thread " + Thread.currentThread()
-                        .name + " for " + delay.toString() + "ms"
-                )
-
-                Log.d(ContentValues.TAG, "Da li ce uci unutra 9999")
-                post.comments = comments
-                post
-            }
-            .subscribeOn(Schedulers.io())
-
-        return resultPostComments
-    }
-
     private fun rxJava2Tutorials() {
 
-        setupCompositeDisposable(BASE_URL)
+        setupCompositeDisposable()
 
         simpleObservablesAndObservers()
     }
@@ -212,7 +229,7 @@ class RxJava2TutorialsFragment : Fragment() {
             .build().create(GithubRepositoryApi::class.java)
     }
 
-    private fun setupCompositeDisposable(baseUrl : String) {
+    private fun setupCompositeDisposable() {
 
         val requestInterface = setupRetrofit()
 
@@ -225,14 +242,22 @@ class RxJava2TutorialsFragment : Fragment() {
 
     private fun searchGithubRepos(requestInterface: GithubRepositoryApi, sizeOfGithubRepos: Int): Disposable? {
         return requestInterface.searchGithubRepositoryWithRxJava2("java", 1, sizeOfGithubRepos)
-            .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
-            .subscribe(this::handleResponse)
+            .observeOn(AndroidSchedulers.mainThread())
+            .onErrorReturn { error ->
+                Log.e(TAG, "onError received: ${error}")
+                RepositoryResponseApi(0, false, listOf())
+            }
+            .subscribe(this::handleResponse, this::onError)
+    }
+
+    private fun onError(error: Throwable) {
+        Log.e(TAG, "onError received: ${error}")
     }
 
     private fun handleResponse(repositoryResponseApi: RepositoryResponseApi) {
 
-        Log.d(ContentValues.TAG, "Size of composite disposable stream and rest api from github: " + repositoryResponseApi.items.size)
+        Log.d(TAG, "Size of composite disposable stream and rest api from github: " + repositoryResponseApi.items.size)
         var reposResult = ""
         repositoryResponseApi.items.forEach { repos ->
             reposResult += "Name of repository: " + repos.name + "\n"
@@ -241,6 +266,32 @@ class RxJava2TutorialsFragment : Fragment() {
     }
 
     private fun simpleObservablesAndObservers() {
+
+        val intervalObservable = Observable
+            .interval(1, TimeUnit.SECONDS)
+            .subscribeOn(Schedulers.io())
+            .takeWhile(object : Predicate<Long?> {
+                // stop the process if more than 5 seconds passes
+                @Throws(java.lang.Exception::class)
+                override fun test(longNumber: Long): Boolean {
+                    return longNumber <= 5
+                }
+            })
+            .observeOn(AndroidSchedulers.mainThread())
+
+        intervalObservable.subscribe(object : io.reactivex.Observer<Long?> {
+            override fun onSubscribe(d: Disposable) {}
+            override fun onNext(aLong: Long) {
+                Log.d(TAG, "AAAA onNext: interval: $aLong")
+            }
+
+            override fun onComplete() {}
+
+            override fun onError(e: Throwable) {
+                Log.e(TAG, "error: $e")
+            }
+        })
+
         val animalsObservable =
             Observable.just("Ant", "Bee", "Cat", "Dog", "Fox")
 
@@ -258,7 +309,7 @@ class RxJava2TutorialsFragment : Fragment() {
             .map { i: Int -> i * i }
             .filter { i: Int -> i > 10 }
             .subscribe { x: Int? ->
-                Log.d(ContentValues.TAG, "Numbers greather than 10 are: " + x)
+                Log.d(TAG, "Numbers greather than 10 are: " + x)
                 println(x) }
     }
 
@@ -266,24 +317,24 @@ class RxJava2TutorialsFragment : Fragment() {
         return object : io.reactivex.Observer<String?> {
 
             override fun onNext(s: String) {
-                Log.d(ContentValues.TAG, "Name: $s")
+                Log.d(TAG, "Name: $s")
             }
 
             override fun onError(e: Throwable) {
                 Log.e(
-                    ContentValues.TAG,
+                    TAG,
                     "onError: " + e.message
                 )
             }
 
             override fun onComplete() {
                 Log.d(
-                    ContentValues.TAG,
+                    TAG,
                     "All items are emitted!"
                 )
             }
             override fun onSubscribe(d: Disposable) {
-                Log.d(ContentValues.TAG, "onSubscribe")
+                Log.d(TAG, "onSubscribe")
             }
         }
     }

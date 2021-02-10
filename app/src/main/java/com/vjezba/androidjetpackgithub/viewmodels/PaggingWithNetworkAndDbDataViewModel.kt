@@ -7,12 +7,13 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.insertSeparators
 import androidx.paging.map
+import com.vjezba.data.di.GithubNetwork
 import com.vjezba.domain.model.RepositoryDetailsResponse
 import com.vjezba.domain.repository.GithubRepository
 import kotlinx.coroutines.flow.*
 
 class PaggingWithNetworkAndDbDataViewModel @ViewModelInject constructor (
-    private val repository: GithubRepository
+    @GithubNetwork private val repository: GithubRepository
 ) : ViewModel() {
 
 //    private val clearListCh = Channel<Unit>(Channel.CONFLATED)

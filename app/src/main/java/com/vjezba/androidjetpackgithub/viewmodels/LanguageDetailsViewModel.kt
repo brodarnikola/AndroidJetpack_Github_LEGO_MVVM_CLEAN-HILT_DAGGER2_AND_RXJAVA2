@@ -23,6 +23,7 @@ import androidx.lifecycle.viewModelScope
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import com.vjezba.androidjetpackgithub.BuildConfig
+import com.vjezba.data.di.GithubNetwork
 import com.vjezba.domain.repository.LanguagesRepository
 import com.vjezba.domain.repository.SavedLanguagesRepository
 import kotlinx.coroutines.launch
@@ -31,8 +32,8 @@ import kotlinx.coroutines.launch
  * The ViewModel used in [LanguageDetailFragment].
  */
 class LanguageDetailsViewModel @AssistedInject constructor(
-    languageRepository: LanguagesRepository,
-    private val savedLanguagesRepository: SavedLanguagesRepository,
+    @GithubNetwork languageRepository: LanguagesRepository,
+    @GithubNetwork private val savedLanguagesRepository: SavedLanguagesRepository,
     @Assisted private val languagesId: Int
 ) : ViewModel() {
 

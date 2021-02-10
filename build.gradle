@@ -50,6 +50,8 @@ buildscript {
         //rxjava2 versions
         rxjavaVersion = '2.1.9'
         rxAndroidVersion = '2.0.1'
+
+        biometricsVersion = '1.1.0'
     }
 
 

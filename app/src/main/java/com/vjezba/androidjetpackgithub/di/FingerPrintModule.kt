@@ -17,7 +17,6 @@
 package com.vjezba.androidjetpackgithub.di
 
 import android.content.Context
-import androidx.fragment.app.FragmentActivity
 import com.vjezba.androidjetpackgithub.ui.utilities.FingerPrintUtils
 import dagger.Module
 import dagger.Provides
@@ -31,8 +30,8 @@ import dagger.hilt.android.qualifiers.ActivityContext
 class FingerPrintModule {
 
     @Provides
-    fun provideFingerPrintData(@ActivityContext context: Context, activity: FragmentActivity): FingerPrintUtils {
-        return FingerPrintUtils(context, activity = activity)
+    fun provideFingerPrintData(@ActivityContext context: Context): FingerPrintUtils {
+        return FingerPrintUtils(context)
     }
 
 

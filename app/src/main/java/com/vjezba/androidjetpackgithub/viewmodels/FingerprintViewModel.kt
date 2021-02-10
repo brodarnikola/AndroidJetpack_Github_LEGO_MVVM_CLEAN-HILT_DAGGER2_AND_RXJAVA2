@@ -26,9 +26,6 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.vjezba.androidjetpackgithub.ui.activities.LoginError
-import com.vjezba.androidjetpackgithub.ui.activities.LoginSuccess
-import com.vjezba.androidjetpackgithub.ui.activities.LoginViewState
 import com.vjezba.androidjetpackgithub.ui.utilities.FingerPrintUtils
 import dagger.hilt.android.qualifiers.ActivityContext
 
@@ -65,10 +62,6 @@ class FingerprintViewModel @ViewModelInject internal constructor(
             override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
                 super.onAuthenticationError(errorCode, errString)
                 Log.d("BiometricError", "Authentication $errorCode :: $errString")
-                if (errorCode == BiometricPrompt.ERROR_NEGATIVE_BUTTON) {
-                    // loginWithPassword() // Because in this app, the negative button allows the user to enter an account password. This is completely optional and your app doesn’t have to do it.
-                    createPromptInfo()
-                }
             }
 
             override fun onAuthenticationFailed() {
@@ -80,8 +73,6 @@ class FingerprintViewModel @ViewModelInject internal constructor(
                 super.onAuthenticationSucceeded(result)
                 Log.d("BiometricSuccess", "Authentication was successful")
                 getBiometricPromtAuthentificationCallBackSuccess()
-                // Proceed with viewing the private encrypted message.
-                //showEncryptedMessage(result.cryptoObject)
             }
         }
 
@@ -89,15 +80,14 @@ class FingerprintViewModel @ViewModelInject internal constructor(
         return biometricPrompt
     }
 
-    fun createPromptInfo(): BiometricPrompt.PromptInfo {
+    fun createPromptInfo(fingerPrintTitle: String, fingerPrintDescription: String, fingerPrintCancel: String): BiometricPrompt.PromptInfo {
         val promptInfo = BiometricPrompt.PromptInfo.Builder()
-            .setTitle("getString(R.string.action_settings)")
-            .setSubtitle("getString(R.string.app_name)")
-            .setDescription("getString(R.string.created_at)")
+            .setTitle(fingerPrintTitle)
+            .setDescription(fingerPrintDescription)
             // Authenticate without requiring the user to press a "confirm"
             // button after satisfying the biometric check
             .setConfirmationRequired(false)
-            .setNegativeButtonText("getString(R.string.created_by)")
+            .setNegativeButtonText(fingerPrintCancel)
             .setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_STRONG)
             .build()
         return promptInfo

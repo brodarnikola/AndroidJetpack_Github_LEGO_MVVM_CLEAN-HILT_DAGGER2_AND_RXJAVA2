@@ -8,21 +8,17 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
+import com.vjezba.androidjetpackgithub.R
 import com.vjezba.androidjetpackgithub.databinding.FragmentFingerprintBinding
 import com.vjezba.androidjetpackgithub.viewmodels.FingerprintViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_languages_main.*
 import kotlinx.android.synthetic.main.fragment_fingerprint.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 
 /**
@@ -45,10 +41,7 @@ class FingerprintBiometricFragment : Fragment() {
     ): View? {
         val binding = FragmentFingerprintBinding.inflate(inflater, container, false)
 
-        //biometricPrompt = createBiometricPrompt()
-
-        activity?.speedDial?.visibility = View.VISIBLE
-
+        activity?.speedDial?.visibility = View.GONE
 
         return binding.root
     }
@@ -56,44 +49,52 @@ class FingerprintBiometricFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if( requestCode == BIOMETRICS_REQUEST_CODE ) {
-            Toast.makeText(requireContext(), "Juhu pokazat cemo slijedeci put sliku", Toast.LENGTH_LONG).show()
+            Log.i("FingerprintAvailable", "New fingerprint added to mobile phone")
         }
     }
 
     override fun onStart() {
         super.onStart()
 
-        val inttest5 = viewModel.checkIfFingerprinteIsEnabled()
-        if( BIOMETRIC_ERROR_NONE_ENROLLED == inttest5 ) {
-            Log.i("FingerprintAvailable", "Da li ce uci za fingerprint Check if fingerprint is availabe: ${inttest5}")
-                            // Prompts the user to create credentials that your app accepts.
-                val enrollIntent = Intent(Settings.ACTION_BIOMETRIC_ENROLL).apply {
-                    putExtra(
-                        Settings.EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED,
-                        BiometricManager.Authenticators.BIOMETRIC_STRONG
-                    )
-                }
-                startActivityForResult(enrollIntent, BIOMETRICS_REQUEST_CODE)
-        }
+        checkIfThereIsAtLeastOneFingerprintAddedToMobilePhone()
+        setOnClickListeners()
+        addLiveData()
+    }
 
+    private fun setOnClickListeners() {
         biometricPrompt = viewModel.createBiometricPrompt()
-        Log.i("FingerprintAvailable", "Check if fingerprint is availabe: ${inttest5}")
+
+        val fingerPrintTitle = resources.getString(R.string.biometric_fingerprint_title)
+        val fingerPrintDescription = resources.getString(R.string.biometric_fingerprint_description)
+        val fingerPrintCancel = resources.getString(R.string.biometric_fingerprint_cancel)
 
         btnFingerPrint.setOnClickListener {
-            val promptInfo = viewModel.createPromptInfo()
+            val promptInfo = viewModel.createPromptInfo(fingerPrintTitle, fingerPrintDescription, fingerPrintCancel)
             if (viewModel.getBiometricManager().canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG) == BiometricManager.BIOMETRIC_SUCCESS) {
                 biometricPrompt.authenticate(promptInfo)
             } else {
-                lifecycleScope.launch(Dispatchers.Main) {
-//                    showSnackbarSync(resources.getString(R.string.normal_login_not_fingerprint), true, rootElement)
-//                    delay(2000)
-//                    val intent = Intent(this@LoginActivity, WeatherActivity::class.java)
-//                    startActivity(intent)
-//                    finish()
-                }
+                detail_image.visibility = View.VISIBLE
             }
         }
+    }
 
+    private fun checkIfThereIsAtLeastOneFingerprintAddedToMobilePhone() {
+        val notOneFingerExistOnMobilePhone = viewModel.checkIfFingerprinteIsEnabled()
+        if( notOneFingerExistOnMobilePhone == BIOMETRIC_ERROR_NONE_ENROLLED ) {
+            Log.i("FingerprintAvailable", "Da li ce uci za fingerprint Check if fingerprint is availabe: ${notOneFingerExistOnMobilePhone}")
+            // Prompts the user to create credentials that your app accepts.
+            val enrollIntent = Intent(Settings.ACTION_BIOMETRIC_ENROLL).apply {
+                putExtra(
+                    Settings.EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED,
+                    BiometricManager.Authenticators.BIOMETRIC_STRONG
+                )
+            }
+            startActivityForResult(enrollIntent, BIOMETRICS_REQUEST_CODE)
+        }
+        Log.i("FingerprintAvailable", "Check if there is at least one fingerprint: ${notOneFingerExistOnMobilePhone}")
+    }
+
+    private fun addLiveData() {
         viewModel.fingerPrintState.observe(viewLifecycleOwner, Observer { state ->
             if( state ) {
                 detail_image.visibility = View.VISIBLE
@@ -102,7 +103,6 @@ class FingerprintBiometricFragment : Fragment() {
                 detail_image.visibility = View.INVISIBLE
             }
         })
-
     }
 
 }

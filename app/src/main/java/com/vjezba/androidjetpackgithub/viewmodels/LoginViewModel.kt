@@ -1,6 +1,5 @@
 package com.vjezba.androidjetpackgithub.viewmodels
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,8 +8,12 @@ import com.vjezba.androidjetpackgithub.ui.activities.LoginSuccess
 import com.vjezba.androidjetpackgithub.ui.activities.LoginViewState
 import com.vjezba.domain.repository.SavedLanguagesRepository
 import com.vjezba.domain.repository.UserManager
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class LoginViewModel @ViewModelInject internal constructor(private val userManager: UserManager
+
+@HiltViewModel
+class LoginViewModel @Inject internal constructor(private val userManager: UserManager
 ) : ViewModel() {
 
     private val _loginState = MutableLiveData<LoginViewState>()

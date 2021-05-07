@@ -16,9 +16,10 @@
 
 package com.vjezba.androidjetpackgithub.viewmodels
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import com.vjezba.domain.repository.UserManager
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
 
 /**
@@ -30,7 +31,9 @@ import com.vjezba.domain.repository.UserManager
 
 // Scopes this ViewModel to components that use @ActivityScope
 
-class RegistrationViewModel @ViewModelInject constructor(val userManager: UserManager) : ViewModel() {
+
+@HiltViewModel
+class RegistrationViewModel @Inject constructor(val userManager: UserManager) : ViewModel() {
 
     private var username: String? = null
     private var password: String? = null

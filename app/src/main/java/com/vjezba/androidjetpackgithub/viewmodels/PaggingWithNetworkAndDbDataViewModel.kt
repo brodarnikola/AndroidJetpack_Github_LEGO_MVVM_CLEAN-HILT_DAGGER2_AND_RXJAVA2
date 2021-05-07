@@ -1,6 +1,5 @@
 package com.vjezba.androidjetpackgithub.viewmodels
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -10,9 +9,12 @@ import androidx.paging.map
 import com.vjezba.data.di.GithubNetwork
 import com.vjezba.domain.model.RepositoryDetailsResponse
 import com.vjezba.domain.repository.GithubRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
+import javax.inject.Inject
 
-class PaggingWithNetworkAndDbDataViewModel @ViewModelInject constructor (
+@HiltViewModel
+class PaggingWithNetworkAndDbDataViewModel @Inject constructor (
     @GithubNetwork private val repository: GithubRepository
 ) : ViewModel() {
 

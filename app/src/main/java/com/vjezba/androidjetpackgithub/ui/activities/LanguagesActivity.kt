@@ -98,13 +98,13 @@ class LanguagesActivity : AppCompatActivity() {
     }
 
     private fun logoutUser() {
+        val languagesActivityViewModel: LanguagesActivityViewModel by viewModels()
         val logout = nav_view?.getHeaderView(0)?.findViewById<ImageView>(R.id.ivLogout)
         logout?.setOnClickListener {
             lifecycleScope.launch(Dispatchers.IO) {
-                val languagesActivityViewModel: LanguagesActivityViewModel by viewModels()
-                languagesActivityViewModel.deleteAllSavedProgrammingLanguagesOfUser()
                 userManager.logout()
                 withContext(Dispatchers.Main) {
+                    languagesActivityViewModel.deleteAllSavedProgrammingLanguagesOfUser()
                     val intent = Intent(this@LanguagesActivity, LoginActivity::class.java)
                     startActivity(intent)
                     finish()

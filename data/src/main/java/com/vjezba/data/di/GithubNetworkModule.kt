@@ -22,7 +22,7 @@ import com.vjezba.data.networking.GithubRepositoryApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -34,7 +34,7 @@ import javax.inject.Singleton
 private const val BASE_URL = "https://api.github.com/"
 
 
-@InstallIn(ApplicationComponent::class)
+@InstallIn(SingletonComponent::class)
 @Module
 class GithubNetworkModule {
 

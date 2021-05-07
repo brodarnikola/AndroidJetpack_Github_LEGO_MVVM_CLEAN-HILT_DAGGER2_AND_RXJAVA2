@@ -16,16 +16,21 @@
 
 package com.vjezba.androidjetpackgithub.viewmodels
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.vjezba.data.di.GithubNetwork
 import com.vjezba.domain.model.RepositoryDetailsResponse
 import com.vjezba.domain.repository.GithubRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.scopes.ActivityScoped
+import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class GalleryViewModel @ViewModelInject internal constructor(
+
+@HiltViewModel
+class GalleryViewModel @Inject internal constructor(
     @GithubNetwork private val repository: GithubRepository
 ) : ViewModel() {
 

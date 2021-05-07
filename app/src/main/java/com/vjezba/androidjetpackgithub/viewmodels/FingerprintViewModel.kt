@@ -21,21 +21,26 @@ import android.util.Log
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.vjezba.androidjetpackgithub.ui.fragments.FingerprintBiometricFragment
 import com.vjezba.androidjetpackgithub.ui.utilities.FingerPrintUtils
+import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ActivityContext
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.android.scopes.FragmentScoped
+import dagger.hilt.android.scopes.ViewModelScoped
+import javax.inject.Inject
 
 /**
  * The ViewModel for [SavedLanguagesFragment].
  */
-class FingerprintViewModel @ViewModelInject internal constructor(
-    private val fingerPrintUtils: FingerPrintUtils,
-    @ActivityContext private val context: Context,
-    private val activity: FragmentActivity
+@HiltViewModel
+class FingerprintViewModel @Inject internal constructor(
+    private val fingerPrintUtils: FingerPrintUtils
 ) : ViewModel() {
 
 
@@ -55,7 +60,7 @@ class FingerprintViewModel @ViewModelInject internal constructor(
     }
 
 
-    fun createBiometricPrompt(): BiometricPrompt {
+    fun createBiometricPrompt(fragment: FingerprintBiometricFragment, context: Context): BiometricPrompt {
         val executor = ContextCompat.getMainExecutor(context)
 
         val callback = object : BiometricPrompt.AuthenticationCallback() {
@@ -76,7 +81,7 @@ class FingerprintViewModel @ViewModelInject internal constructor(
             }
         }
 
-        val biometricPrompt = BiometricPrompt(activity, executor, callback)
+        val biometricPrompt = BiometricPrompt(fragment, executor, callback)
         return biometricPrompt
     }
 

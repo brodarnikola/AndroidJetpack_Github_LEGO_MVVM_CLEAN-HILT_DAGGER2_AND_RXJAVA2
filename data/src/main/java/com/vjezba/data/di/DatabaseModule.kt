@@ -20,18 +20,14 @@ import android.content.Context
 import com.vjezba.data.database.AppDatabase
 import com.vjezba.data.database.dao.LanguagesDao
 import com.vjezba.data.database.dao.SavedLanguagesDAO
-import com.vjezba.domain.repository.UserManager
-import com.vjezba.domain.storage.SharedPreferencesStorage
-import com.vjezba.domain.storage.Storage
-import com.vjezba.domain.user.UserManagerImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
-@InstallIn(ApplicationComponent::class)
+@InstallIn(SingletonComponent::class)
 @Module
 class DatabaseModule {
 

@@ -1,18 +1,21 @@
 package com.vjezba.androidjetpackgithub.viewmodels
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import com.vjezba.data.di.lego.CoroutineScropeIO
 import com.vjezba.data.di.lego.LegoNetwork
 import com.vjezba.data.lego.repository.LegoSetRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
+import javax.inject.Inject
 
 /**
  * The ViewModel for [LegoSetsFragment].
  */
-class LegoSetsViewModel @ViewModelInject constructor(@LegoNetwork private val repository: LegoSetRepository,
-                                                     @CoroutineScropeIO private val ioCoroutineScope: CoroutineScope)
+
+@HiltViewModel
+class LegoSetsViewModel @Inject constructor(@LegoNetwork private val repository: LegoSetRepository,
+                                            @CoroutineScropeIO private val ioCoroutineScope: CoroutineScope)
     : ViewModel() {
 
     var connectivityAvailable: Boolean = false

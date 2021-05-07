@@ -16,31 +16,19 @@
 
 package com.vjezba.data.di
 
-import androidx.room.TypeConverter
-import com.vjezba.data.database.AppDatabase
-import com.vjezba.data.database.dao.LanguagesDao
-import com.vjezba.data.database.dao.SavedLanguagesDAO
 import com.vjezba.data.database.mapper.DbMapper
 import com.vjezba.data.database.mapper.DbMapperImpl
-import com.vjezba.data.networking.GithubRepositoryApi
-import com.vjezba.data.repository.GithubRepositoryImpl
-import com.vjezba.data.repository.LanguagesRepositoryImpl
-import com.vjezba.data.repository.SavedLanguagesRepositoryImpl
-import com.vjezba.domain.repository.GithubRepository
-import com.vjezba.domain.repository.LanguagesRepository
-import com.vjezba.domain.repository.SavedLanguagesRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityComponent
-import dagger.hilt.android.components.ApplicationComponent
-import java.util.Calendar
+import dagger.hilt.components.SingletonComponent
 
 /**
  * Type converters to allow Room to reference complex data types.
  */
 @Module
-@InstallIn(ActivityComponent::class)
+@InstallIn(SingletonComponent::class)
 class MapperModule {
 
     @Provides

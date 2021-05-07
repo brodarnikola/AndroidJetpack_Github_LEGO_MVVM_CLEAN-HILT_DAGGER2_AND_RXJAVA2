@@ -16,31 +16,36 @@
 
 package com.vjezba.androidjetpackgithub.viewmodels
 
-import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
-import com.squareup.inject.assisted.Assisted
-import com.squareup.inject.assisted.AssistedInject
+import androidx.lifecycle.*
 import com.vjezba.androidjetpackgithub.BuildConfig
 import com.vjezba.data.di.GithubNetwork
+import com.vjezba.domain.model.Languages
 import com.vjezba.domain.repository.LanguagesRepository
 import com.vjezba.domain.repository.SavedLanguagesRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  * The ViewModel used in [LanguageDetailFragment].
  */
-class LanguageDetailsViewModel @AssistedInject constructor(
-    @GithubNetwork languageRepository: LanguagesRepository,
-    @GithubNetwork private val savedLanguagesRepository: SavedLanguagesRepository,
-    @Assisted private val languagesId: Int
+
+@HiltViewModel
+class LanguageDetailsViewModel @Inject constructor(
+    @GithubNetwork val languageRepository: LanguagesRepository,
+    @GithubNetwork private val savedLanguagesRepository: SavedLanguagesRepository
 ) : ViewModel() {
 
-    val isSavedLanguage = savedLanguagesRepository.isLanguageSaved(languagesId)
-    val languageDetails = languageRepository.getLanguage(languagesId)
+    fun isLanguageSaved(languagesId: Int) : LiveData<Boolean> {
+        return savedLanguagesRepository.isLanguageSaved(languagesId)
+    }
 
-    fun saveProgrammingLanguage() {
+    fun languageDetails(languagesId: Int) : LiveData<Languages> {
+        return languageRepository.getLanguage(languagesId)
+    }
+
+
+    fun saveProgrammingLanguage(languagesId: Int) {
         viewModelScope.launch {
             savedLanguagesRepository.createSavedLanguage(languagesId)
         }
@@ -48,20 +53,4 @@ class LanguageDetailsViewModel @AssistedInject constructor(
 
     fun hasValidUnsplashKey() = (BuildConfig.UNSPLASH_ACCESS_KEY != "null")
 
-    @AssistedInject.Factory
-    interface AssistedFactory {
-        fun create(languagesId: Int): LanguageDetailsViewModel
-    }
-
-    companion object {
-        fun provideFactory(
-            assistedFactory: AssistedFactory,
-            languagesId: Int
-        ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
-            @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return assistedFactory.create(languagesId) as T
-            }
-        }
-    }
 }

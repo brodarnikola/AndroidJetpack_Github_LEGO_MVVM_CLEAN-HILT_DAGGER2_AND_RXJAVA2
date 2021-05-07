@@ -16,23 +16,19 @@
 
 package com.vjezba.data.di
 
-import android.content.Context
 import com.vjezba.domain.repository.UserManager
-import com.vjezba.domain.storage.SharedPreferencesStorage
 import com.vjezba.domain.storage.Storage
 import com.vjezba.domain.user.UserManagerImpl
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ApplicationComponent
-import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 
 /**
  * Type converters to allow Room to reference complex data types.
  */
 @Module
-@InstallIn(ApplicationComponent::class)
+@InstallIn(SingletonComponent::class)
 class UserManagerModule {
 
     @Provides

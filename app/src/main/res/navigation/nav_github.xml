@@ -52,14 +52,10 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
 
+
+
     </fragment>
 
-    <fragment
-        android:id="@+id/fingerprint_fragment"
-        android:name="com.vjezba.androidjetpackgithub.ui.fragments.FingerprintBiometricFragment"
-        android:label="Fingerprint fragment"
-        tools:layout="@layout/fragment_fingerprint">
-    </fragment>
 
     <fragment
         android:id="@+id/language_details_fragment"
@@ -193,6 +189,13 @@
             app:argType="string" />
     </fragment>
 
+
+    <fragment
+        android:id="@+id/fingerprint_fragment"
+        android:name="com.vjezba.androidjetpackgithub.ui.fragments.FingerprintBiometricFragment"
+        android:label="Fingerprint fragment"
+        tools:layout="@layout/fragment_fingerprint">
+    </fragment>
 
 
 

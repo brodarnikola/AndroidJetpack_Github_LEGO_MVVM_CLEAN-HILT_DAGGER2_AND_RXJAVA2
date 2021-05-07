@@ -16,15 +16,17 @@
 
 package com.vjezba.androidjetpackgithub.viewmodels
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vjezba.data.di.GithubNetwork
 import com.vjezba.domain.repository.SavedLanguagesRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
-class LanguagesActivityViewModel @ViewModelInject constructor(
+@HiltViewModel
+class LanguagesActivityViewModel @Inject constructor(
     @GithubNetwork val savedLanguages: SavedLanguagesRepository
 ) : ViewModel() {
 

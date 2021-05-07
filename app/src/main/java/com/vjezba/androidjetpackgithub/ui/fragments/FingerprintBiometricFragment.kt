@@ -62,7 +62,7 @@ class FingerprintBiometricFragment : Fragment() {
     }
 
     private fun setOnClickListeners() {
-        biometricPrompt = viewModel.createBiometricPrompt()
+        biometricPrompt = viewModel.createBiometricPrompt(this, requireContext())
 
         val fingerPrintTitle = resources.getString(R.string.biometric_fingerprint_title)
         val fingerPrintDescription = resources.getString(R.string.biometric_fingerprint_description)

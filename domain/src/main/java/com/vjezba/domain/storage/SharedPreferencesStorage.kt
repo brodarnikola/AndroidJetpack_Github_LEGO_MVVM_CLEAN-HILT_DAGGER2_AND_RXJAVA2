@@ -19,7 +19,10 @@ package com.vjezba.domain.storage
 import android.content.Context
 import dagger.hilt.android.qualifiers.ActivityContext
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.android.scopes.ActivityScoped
 import javax.inject.Inject
+import javax.inject.Singleton
+
 
 class SharedPreferencesStorage @Inject constructor(@ApplicationContext context: Context) : Storage {
 

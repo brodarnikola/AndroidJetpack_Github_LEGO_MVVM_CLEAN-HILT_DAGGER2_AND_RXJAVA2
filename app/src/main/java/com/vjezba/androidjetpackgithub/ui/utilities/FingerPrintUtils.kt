@@ -5,9 +5,11 @@ import android.util.Log
 import androidx.biometric.BiometricManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.qualifiers.ActivityContext
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.android.scopes.ViewModelScoped
+import javax.inject.Inject
 
-class FingerPrintUtils( @ActivityContext private val context: Context )
-    : RecyclerView.ItemDecoration() {
+class FingerPrintUtils @Inject constructor ( @ApplicationContext  private val context: Context )  {
 
     fun getBiometricManager() : BiometricManager {
         val biometricManager = BiometricManager.from(context)

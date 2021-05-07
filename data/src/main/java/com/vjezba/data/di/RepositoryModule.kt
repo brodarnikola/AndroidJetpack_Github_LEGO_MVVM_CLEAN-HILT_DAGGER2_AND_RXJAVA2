@@ -16,7 +16,6 @@
 
 package com.vjezba.data.di
 
-import androidx.room.TypeConverter
 import com.vjezba.data.database.AppDatabase
 import com.vjezba.data.database.dao.LanguagesDao
 import com.vjezba.data.database.dao.SavedLanguagesDAO
@@ -32,14 +31,14 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityComponent
-import dagger.hilt.android.components.ApplicationComponent
-import java.util.Calendar
+import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.components.SingletonComponent
 
 /**
  * Type converters to allow Room to reference complex data types.
  */
 @Module
-@InstallIn(ActivityComponent::class)
+@InstallIn(ViewModelComponent::class)
 class RepositoryModule {
 
     @Provides

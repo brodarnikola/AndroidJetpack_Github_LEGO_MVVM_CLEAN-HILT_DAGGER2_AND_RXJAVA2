@@ -16,17 +16,19 @@
 
 package com.vjezba.androidjetpackgithub.viewmodels
 
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.vjezba.data.di.GithubNetwork
 import com.vjezba.domain.repository.LanguagesRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
 /**
  * The ViewModel for [SavedLanguagesFragment].
  */
-class LanguagesListViewModel @ViewModelInject internal constructor(
-    @Assisted private val savedStateHandle: SavedStateHandle,
+
+@HiltViewModel
+class LanguagesListViewModel @Inject internal constructor(
+    private val savedStateHandle: SavedStateHandle,
     @GithubNetwork languagesRepository: LanguagesRepository
 ) : ViewModel() {
 

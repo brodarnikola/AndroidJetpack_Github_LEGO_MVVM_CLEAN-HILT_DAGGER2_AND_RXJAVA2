@@ -33,8 +33,8 @@ interface GithubRepository {
     fun getSearchRepositoriesWithMediatorAndPaggingData(query: String) : Flow<PagingData<RepositoryDetailsResponse>>
 
 
-    // practice of rxjava2
-    fun getSearchRepositorieRxJava2(query: String) : Single<RepositoryResponse>
+    // practice of rxjava2,, with single example
+    fun getSearchRepositorieRxJava2(query: String, page: Int, perPage: Int) : Single<RepositoryResponse>
 
     fun getSearchRepositorieWithFlowableRxJava2(query: String) : Flowable<RepositoryResponse>
 

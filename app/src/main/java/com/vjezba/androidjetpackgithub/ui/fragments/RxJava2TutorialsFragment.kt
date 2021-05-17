@@ -33,6 +33,7 @@ import com.vjezba.androidjetpackgithub.viewmodels.RxJava2ViewModel
 import com.vjezba.data.Post
 import com.vjezba.data.networking.GithubRepositoryApi
 import com.vjezba.data.networking.model.RepositoryResponseApi
+import com.vjezba.domain.model.RepositoryResponse
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.Observable
 import io.reactivex.ObservableSource
@@ -235,18 +236,20 @@ class RxJava2TutorialsFragment : Fragment() {
 
         githubReposCompositeDisposable = CompositeDisposable()
         githubReposCompositeDisposable?.addAll(
-            searchGithubRepos(requestInterface, 15),
-            searchGithubRepos(requestInterface, 10)
+
+            searchGithubRepos(requestInterface, 3),
+            searchGithubRepos(requestInterface, 3)
         )
     }
 
     private fun searchGithubRepos(requestInterface: GithubRepositoryApi, sizeOfGithubRepos: Int): Disposable? {
-        return requestInterface.searchGithubRepositoryWithRxJava2("java", 1, sizeOfGithubRepos)
+        // this is a single example of rxjava2 for github repositories
+        return  viewModel.getGithubRepositories("java", 1, sizeOfGithubRepos)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .onErrorReturn { error ->
                 Log.e(TAG, "onError received: ${error}")
-                RepositoryResponseApi(0, false, listOf())
+                RepositoryResponse(0, false, listOf())
             }
             .subscribe(this::handleResponse, this::onError)
     }
@@ -255,14 +258,15 @@ class RxJava2TutorialsFragment : Fragment() {
         Log.e(TAG, "onError received: ${error}")
     }
 
-    private fun handleResponse(repositoryResponseApi: RepositoryResponseApi) {
+    private fun handleResponse(repositoryResponse: RepositoryResponse) {
 
-        Log.d(TAG, "Size of composite disposable stream and rest api from github: " + repositoryResponseApi.items.size)
+        Log.d(TAG, "Size of composite disposable stream and rest api from github: " + repositoryResponse.items.size)
         var reposResult = ""
-        repositoryResponseApi.items.forEach { repos ->
+        repositoryResponse.items.forEach { repos ->
             reposResult += "Name of repository: " + repos.name + "\n"
         }
-        tvCompositeDisposableValue.setText(reposResult)
+        val currectText = tvCompositeDisposableValue.text.toString()
+        tvCompositeDisposableValue.setText(reposResult + currectText )
     }
 
     private fun simpleObservablesAndObservers() {

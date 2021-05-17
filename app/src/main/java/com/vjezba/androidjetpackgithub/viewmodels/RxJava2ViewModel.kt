@@ -10,6 +10,7 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
@@ -48,6 +49,11 @@ class RxJava2ViewModel @Inject constructor(
         })
 
         return authUser
+    }
+
+    // this is a single example of rxjava2 for github repositories
+    fun getGithubRepositories(query: String, page: Int, perPage: Int) : Single<RepositoryResponse> {
+        return repository.getSearchRepositorieRxJava2(query, page, perPage)
     }
 
     private val _incrementNumberAutomaticallyByOne = MediatorLiveData<Int>().apply {

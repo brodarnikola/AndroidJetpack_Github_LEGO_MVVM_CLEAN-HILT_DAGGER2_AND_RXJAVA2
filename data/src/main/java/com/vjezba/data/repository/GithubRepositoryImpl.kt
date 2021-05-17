@@ -64,8 +64,9 @@ class GithubRepositoryImpl  constructor(
         return repositoryDetailsResponse.map { dbMapper.mapPagingRepositoryDetailsResponseDbToPagingRepositoryDetailsResponse(it) }
     }
 
-    override fun getSearchRepositorieRxJava2(query: String): Single<RepositoryResponse> {
-        val repos = service.searchGithubRepositoryWithRxJava2(query, 0, 15)
+    // practice of rxjava2,, with single example
+    override fun getSearchRepositorieRxJava2(query: String, page: Int, perPage: Int): Single<RepositoryResponse> {
+        val repos = service.searchGithubRepositoryWithRxJava2(query, page, perPage)
         val finalRepos = dbMapper?.mapRxJavaApiResponseGithubToDomainGithub(responseApi = repos)
 
         return finalRepos!!

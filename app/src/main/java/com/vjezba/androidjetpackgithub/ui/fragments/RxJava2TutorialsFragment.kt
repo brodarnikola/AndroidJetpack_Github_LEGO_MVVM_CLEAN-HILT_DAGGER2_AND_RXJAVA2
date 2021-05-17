@@ -222,27 +222,17 @@ class RxJava2TutorialsFragment : Fragment() {
         simpleObservablesAndObservers()
     }
 
-    private fun setupRetrofit(): GithubRepositoryApi {
-        return Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .build().create(GithubRepositoryApi::class.java)
-    }
-
     private fun setupCompositeDisposable() {
-
-        val requestInterface = setupRetrofit()
 
         githubReposCompositeDisposable = CompositeDisposable()
         githubReposCompositeDisposable?.addAll(
 
-            searchGithubRepos(requestInterface, 3),
-            searchGithubRepos(requestInterface, 3)
+            searchGithubRepos(3),
+            searchGithubRepos(3)
         )
     }
 
-    private fun searchGithubRepos(requestInterface: GithubRepositoryApi, sizeOfGithubRepos: Int): Disposable? {
+    private fun searchGithubRepos( sizeOfGithubRepos: Int): Disposable? {
         // this is a single example of rxjava2 for github repositories
         return  viewModel.getGithubRepositories("java", 1, sizeOfGithubRepos)
             .subscribeOn(Schedulers.io())

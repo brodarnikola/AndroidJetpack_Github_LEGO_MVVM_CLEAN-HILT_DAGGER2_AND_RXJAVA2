@@ -226,7 +226,6 @@ class RxJava2TutorialsFragment : Fragment() {
 
         githubReposCompositeDisposable = CompositeDisposable()
         githubReposCompositeDisposable?.addAll(
-
             searchGithubRepos(3),
             searchGithubRepos(3)
         )
@@ -234,7 +233,7 @@ class RxJava2TutorialsFragment : Fragment() {
 
     private fun searchGithubRepos( sizeOfGithubRepos: Int): Disposable? {
         // this is a single example of rxjava2 for github repositories
-        return  viewModel.getGithubRepositories("java", 1, sizeOfGithubRepos)
+        return viewModel.getGithubRepositories("java", 1, sizeOfGithubRepos)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .onErrorReturn { error ->
